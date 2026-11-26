@@ -1,14 +1,35 @@
-# Exact physical SDP working candidate (26 November 2026)
+# Finite-range Gaussian thermal reservoirs
 
-WORKING / UNPUBLISHED. Start with manuscript.pdf (19 pages, 25 references), EXACT_SDP_PROOF.md, PRIOR_ART_SDP_ADDENDUM.md, SUBMISSION_DECISION_ADDENDUM.md. Earlier 16-page review, EXTERNAL_REVIEW_PROTOCOL.md and unsent invitation remain relevant. All original 36 Lean files and 14 scientific verifiers unchanged; five new Lean modules and one independent exact verifier added. Core SDP equality of infima and positive-tolerance physical recovery machine checked; finite matrix coordinate/minimum, Slater and prior-art comparison analytic, rational certificates separately verified in Python. No claim of new generic moment theory or physical attainment.
+**Publicly accessible AI-assisted research candidate. Not peer reviewed, accepted, or formally released for submission.** This checkout does not imply a priority finding, an authorship decision, or a license grant. See [release gates](RELEASE_GATES.md).
 
-Reproduce on a new extraction: pinned Lean 4.28.0 / Mathlib 8f9d9cff6bd728b17a24e163c9402775d9e6a365, existing dependency cache; `powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File reproduce.ps1 -RunTests`. The entry point includes all 41 modules and 15 verifiers. Actual observation is full32/12 followed by clean stages 2+2+5 and new verifiers; not a single all41 run. New verifier Linux only, old cross-platform evidence retained. `python verify_exact_sdp.py` checks exact fractions and writes the range-two JSON. `python tools/verify_package.py ARCHIVE.zip` checks manifests, predecessor bytes, new replay input and logs, not fresh science execution. See ENGINEERING_ACCEPTANCE.json. No project precompiled objects.
+- [Manuscript (PDF)](manuscript.pdf), [LaTeX source](manuscript.tex)
+- [Exact range-two proof](RANGE2_EXACT_PROOF.md), [formal model and theorem map](THEOREM_MODEL_AUDIT.md), [range-two Lean theorem](RangeTwoClosure.lean)
+- [Prior-art review](PRIOR_ART.md), [range-two addendum](PRIOR_ART_RANGE2_ADDENDUM.md), [scope and archive notes](ARCHIVE_AND_SCOPE.md)
+- [Evidence and limitations](ENGINEERING_ACCEPTANCE.json), [verifier accounting](VERIFIER_ACCOUNTING.md), [latest checked Windows evidence](RangeTwoClosureWindowsEvidence_2026-11-26.zip)
 
-Prior immutable 16-page archive e7801f619a98b83ca9e46819c3766953d9440c936be4b57c3a78d82c59a6d866 preserved in history and Drive. Prior documents stored under history/pre_exact_sdp_snapshot. New success/failure logs in evidence/exact_sdp. Human review/author decisions remain pending. Formal completion 1/10; A 0/5. No private contact or public release; no paper 3 or new 120-second interval.
+The main additions to the known scalar majorant relaxation are the strict physical gap for $r\ge2$, a sharp constructive physical critical coefficient at fixed range, and the attained all-mass $r=2$ optimum with three distinct positive temperatures and three real FIR channels. The result concerns **degree-bounded individual rates**, not all microscopic local bath models. The exact general SDP characterizes the physical infimum; existence of an SDP minimum does not prove that a physical optimum is attained for $r\ge3$. The scalar relaxation and its critical coefficient, and the nearest-neighbor optimum, are prior results; the general spectral-factorization and matrix-moment machinery is classical. The literature review is targeted, not proof of priority.
 
-## Current extension: attained exact range-two minimum
-This replaces the exact SDP working candidate; see STATUS.md, RANGE2_EXACT_PROOF.md, PRIOR_ART_RANGE2_ADDENDUM.md and SUBMISSION_DECISION_RANGE2.md. The current manuscript has 21 pages. Reproduce.ps1 now includes 44 active Lean modules and 16 scientific verifiers. The accepted run is staged, not a full44 invocation; the new verifier has been executed in Linux only. Run `python tools/verify_package.py <archive>` for integrity/evidence checks (not a scientific replay). The new exact verifier is `python verify_range2_algebraic.py` with previous_range2_certificates.json present. Its rational output overwrites only the local output JSON; run in a fresh unpacked copy. Superseded counts and historical status in earlier sections are archival. No release authorization.
+## Replay on a fresh checkout
 
-## Current version: range-two closure
+Python 3.11 or newer and Git are required. Install Lean/Lake **4.28.0** (for example using [elan](https://github.com/leanprover/elan)); both commands must resolve to that version. Prepare a separate Mathlib checkout once:
 
-Start with `LATEST_REVIEW_CANDIDATE.md`, `manuscript.pdf` and `RANGE2_EXACT_PROOF.md` section 8. The all-mass exact theorem and minimum resource consequences are machine checked by the added `RangeTwoClosure.lean`. The root theorem uses actual `BathFamily`, arbitrary finite indices, real FIR coefficients, strictly positive temperatures and full-frequency normalization. `reproduce.ps1 -RunTests` now contains 45 modules and 17 verifiers; the observed project reconstruction is staged (32+2+2+5+3+1), not a single all-45 execution. The new checker uses exact Bernstein sign certificates, with identical semantic JSON on Windows/Linux. Both previously missing Windows replays have also completed. The scientific count remains 43,300. Run `python tools/verify_package.py ARCHIVE.zip` for integrity, not a fresh science replay. All prior changed bytes are in `history/pre_range2_closure_snapshot/`. Failed transfer one-byte files are raw historical evidence, not active sources. See `RELEASE_GATES.md`; independent human review, author approval, license and public release remain pending.
+```sh
+git clone https://github.com/leanprover-community/mathlib4.git mathlib4
+git -C mathlib4 checkout 8f9d9cff6bd728b17a24e163c9402775d9e6a365
+cd mathlib4
+lake exe cache get
+cd ..
+```
+
+From this repository, substitute the actual location of that checkout:
+
+```sh
+python -m pip install -r requirements-replay.txt
+python reproduce.py --mathlib /path/to/mathlib4 --run-tests
+```
+
+Windows PowerShell equivalent: `./reproduce.ps1 -Mathlib C:\path\to\mathlib4 -RunTests`. Specify `-LeanBin` or `--lean-bin` if Lean and Lake are not on PATH. To run only the 17 Python verifiers, use `python reproduce.py --python-only`. The runner refuses an incorrect Lean or Mathlib revision and writes a new isolated evidence directory (use `--output NEW-DIRECTORY` to choose its name). Python verifiers run on copies so tracked JSON is not overwritten.
+
+The pinned historical record is a staged project replay of 45 Lean modules (32+2+2+5+3+1), not one all-45 invocation or a clean rebuild of Mathlib itself. It reports 87 representative axiom audits, 43,300 historical finite test units, and 10 additional universal symbolic certificate groups reported separately. Lean proves the specified discrete Fourier/FIR theorem statements; the physical interpretation, limits obtained by squeeze, and the general finite-dimensional SDP-coordinate/compactness argument also use analytic reasoning. The full historical archive is not included in this checkout. To check a copy of that full archive, run `python verify_package.py FULL_ARCHIVE.zip`; this is an **integrity check**, not a fresh scientific replay.
+
+To check this GitHub snapshot locally: `sha256sum -c GITHUB_SHA256SUMS.txt` (or `python reproduce.py --check-manifest`).

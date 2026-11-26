@@ -1,3 +1,5 @@
-# Range-two closure candidate, 26 November 2026
-WORKING / UNPUBLISHED; formal completion 1/10; A 0/5.
-Start with manuscript.pdf, RANGE2_EXACT_PROOF.md (section 8), RangeTwoClosure.lean, PRIOR_ART_RANGE2_ADDENDUM.md (current recheck), THEOREM_MODEL_AUDIT.md, SPECIALIST_REVIEW_BRIEF.md, SUBMISSION_DECISION_RANGE2.md and RELEASE_GATES.md. See separate Drive index for verified remote archive and evidence links. 45 modules / 17 verifiers / 87 representative audits. Exact staged source matches, Windows/Linux certificate match; 43,300 historical scientific units unchanged. This is a private review candidate, not a claim of independent academic review or public release.
+# Range-two closure candidate
+
+Publicly accessible working snapshot; not peer reviewed and not formally released for submission. Start with [manuscript.pdf](manuscript.pdf), [range-two proof](RANGE2_EXACT_PROOF.md), [range-two Lean closure](RangeTwoClosure.lean), [prior-art addendum](PRIOR_ART_RANGE2_ADDENDUM.md), [theorem/model audit](THEOREM_MODEL_AUDIT.md), and [release gates](RELEASE_GATES.md).
+
+Historical evidence: 45 modules / 17 verifiers / 87 representative axiom audits; staged source matches; Windows/Linux certificate match. The 43,300 historical finite test units do not include the 10 new universal symbolic certificate groups. These are engineering and proof-evidence records, not independent academic review.

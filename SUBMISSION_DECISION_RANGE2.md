@@ -1,6 +1,6 @@
 # External-review decision supplement — range two
 
-Private internal research. Formal completion remains 1/10; independent A-grade remains 0/5. The previous review protocol and invitation draft remain applicable and are not replaced.
+Working candidate in a publicly accessible snapshot. Independent review and formal scientific release remain pending.
 
 ## What a reviewer can now decide
 
@@ -17,8 +17,8 @@ Private internal research. Formal completion remains 1/10; independent A-grade r
 - A-grade candidacy: require a qualified independent assessment with reasons that the contribution is substantial relative to existing theoretical physics, not simply that the paper is correct or formalized. We have no such assessment yet. The exact result materially improves precision and implementability inside the model, but the limited class remains a likely rejection reason. A publication venue or high-impact status cannot be inferred.
 - Public release: separate explicit approval of authorship/contributions, affiliation, corresponding author, AI disclosure, license and intended public distribution. Verify rights to all included source and data. Freeze the reviewed package, record remote hash, then publish in Logic1311 only after all gates pass. Do not identify any author or select a venue/license without authorization. Private reviewer permission does not authorize public posting or journal submission.
 
-No named reviewer has been contacted. No external review result, acceptance, public GitHub repository or permission has been fabricated. No paper three work or new 120-second interval is authorized under the user's sequence rule.
+No named reviewer has been contacted. The publicly accessible GitHub snapshot is not evidence of an external review, acceptance, or formal release approval.
 
 ## Closure update — 26 November 2026
 
-The former analytic-only bracket uniqueness and exact-resource conclusions are now kernel checked. Both the direct finite-difference argument and independent Bernstein positivity certificates cover all m>0. The verified statement concerns the actual physical optimum, not an abstract candidate. No new finite case count; all 45 active Lean source bytes match the cumulative staged build input. The previously missing Windows executions of the two SDP/range-two verifiers have been completed. The engineering and manuscript checks can support private review, but independent human originality/significance assessment is still outstanding. The user's latest instruction to proceed to GitHub is interpreted as authorization to prepare the GitHub deliverable, not as an independent academic finding, an author assignment, a license decision or permission to contact external reviewers. Public release remains subject to the prior substantive review/author gates. A private GitHub staging repository, if available under Logic1311, is not public release and does not change the completion or A-grade count.
+The former analytic-only bracket uniqueness and exact-resource conclusions are now kernel checked. Both the direct finite-difference argument and independent Bernstein positivity certificates cover all m>0. The verified statement concerns the actual physical optimum, not an abstract candidate. No new finite case count; all 45 active Lean source bytes match the cumulative staged build input. The previously missing Windows executions of the two SDP/range-two verifiers have been completed. The engineering and manuscript checks can support private review, but independent human originality/significance assessment is still outstanding. Formal scientific release remains subject to the substantive review and author gates, regardless of snapshot visibility.

@@ -8,8 +8,8 @@
 | Manuscript and reproducibility | See actual compiler, render and acceptance records |
 | Authorship, affiliation, corresponding author, contributions and AI disclosure | PENDING accountable human decision |
 | Private external reviewer sharing, license, venue, journal submission | PENDING specific authorization |
-| Public Logic1311 release | PENDING prior academic and author gates; GitHub staging instruction received; no public release claimed |
+| Formal scientific release | PENDING prior academic and author gates. This GitHub snapshot is publicly accessible; that does not satisfy the gate. |
 
-Formal completion 1/10; independently assessed A 0/5. No new 120-second interval or paper 3. A private GitHub staging repo, if created, does not satisfy the public-release gate.
+A publicly viewable working candidate is not a publication, independent review, or acceptance decision.
 
 Manuscript: 21 pages, 25 references, three successful compiler passes, all pages rendered/reviewed, no final overfull-box or undefined-reference warnings. Immutable cloud readback recorded separately.

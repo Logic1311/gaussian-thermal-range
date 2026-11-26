@@ -1,8 +1,8 @@
 # Current status — range-two closure (26 November 2026)
-WORKING / UNPUBLISHED; formal completion 1/10; independent A-grade 0/5.
+Publicly accessible working snapshot; not peer reviewed or formally released.
 
 The full r=2 all-positive-mass quartic minimum, unique strict-bracket root, root-to-physical-cost relation, and attained exactly-three-channel/temperature realization are now kernel checked in `RangeTwoClosure.lean`. Every physical optimum has at least three channels and cannot use a two-temperature palette. All 45 source hashes match the staged 32+2+2+5+3+1 replay; 87 representative axiom audits. General r>=3 physical attainment remains open; general coordinate-SDP compactness/minimum proof is analytic. The rate-degree condition is essential and not equivalent to arbitrary microscopic momentum-dependent density-of-states models. The strongest candidate contributions remain strict finite-range physical gap, constructive critical saturation, and exact range-two minimum. General moment theory and classical approximation are credited.
 
 17 active verifiers; 35,100 exact + 8,200 tolerance = 43,300 historical scientific units; 10 new universal symbolic certificate groups separate. New verifier passed Windows and Linux, matching JSON values; old missing Windows verifiers replayed with identical source hashes and JSON values. No new finite cases. No all-45 single invocation, no dependency rebuild. All predecessor payloads retained. See ENGINEERING_ACCEPTANCE.json and separate cloud readback acceptance.
 
-Independent human review, author responsibility/affiliation and disclosure approval, licensing and venue remain pending. No external contact, no public release, no new 120-second interval or paper 3. A private staging upload is not an academic publication or completion.
+Independent human review, author responsibility/affiliation and disclosure approval, licensing and venue remain pending. GitHub visibility is not journal publication or approval of these gates. No external contact is reported.

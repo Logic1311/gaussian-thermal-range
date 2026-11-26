@@ -1,3 +1,7 @@
-# Private research staging
-This repository is an unpublished AI-assisted candidate, not a public release or independent expert review. No authorship, license, or venue is assigned. Full immutable archive and all historical evidence are retained in Google Drive: https://drive.google.com/file/d/1C_a5lU1YqIZws0ZxucJaCESxV7ykFhxW/view
-Archive SHA-256 eb2a3a625ba58afed03d4125114d1e0ea46ac24a53c57e13744679985df03892; 1183 entries, 1182 verified payloads, 1108 predecessor payloads. GitHub contains active Lean/Python sources, manuscript, selected proof documents and newest Windows raw evidence. The full package integrity checker expects the full Drive ZIP. 45 active Lean modules, 17 verifiers, 87 axiom audits; 43300 finite scientific units unchanged; 10 new symbolic groups separately. Independent academic review and public release gates remain open.
+# Candidate scope and archive boundaries
+
+This repository is a **publicly accessible snapshot** of a working, AI-assisted candidate. It is not peer reviewed; accountable authorship, licensing, venue choice, and formal scientific release approval remain open. Repository visibility is not evidence that those gates were met.
+
+This checkout contains the manuscript, active Lean and Python sources, selected proof and literature documents, their integrity manifest, and the latest Windows replay evidence. The separately retained full historical archive is not part of this snapshot; it contains predecessor files and additional logs. `verify_package.py` checks such a complete archive and is not a fresh scientific replay.
+
+Historical evidence: staged 45-module project replay, 17 scientific verifiers, 87 representative axiom audits, 43,300 historical finite units, and 10 separate universal symbolic certificate groups. See [engineering acceptance](ENGINEERING_ACCEPTANCE.json) and [verifier accounting](VERIFIER_ACCOUNTING.md) for what each number measures.

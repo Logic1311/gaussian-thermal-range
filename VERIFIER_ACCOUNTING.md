@@ -21,7 +21,7 @@ The historical figure 41,243 is the sum of reported check counters excluding the
 - Full active-script replay total: 41,679 = 33,479 exact + 8,200 numerical counted checks.
 - No new checks added to the historical total by this replay. A check counter can represent a conjunction of assertions or a test case, and is not always one source-code assert.
 - Lean verification and all 42 representative axiom declarations are separate from finite tests.
-- Raw cross-platform replay evidence: https://drive.google.com/file/d/1s0kK2W_NZog_OVWMMvkfCIwZoAVOIZtZ/view .
+- Full historical cross-platform logs are retained separately; the newest included Windows evidence is in `RangeTwoClosureWindowsEvidence_2026-11-26.zip`.
 
 ## New work (2026-11-26)
 
