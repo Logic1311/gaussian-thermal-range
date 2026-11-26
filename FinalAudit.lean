@@ -1,0 +1,31 @@
+import PathResidual
+import RelaxationPower
+
+#check GaussianRange.optimalEntropy_theta
+#print axioms GaussianRange.optimalEntropy_theta
+#check GaussianRange.BathFamily.sigma_identity
+#print axioms GaussianRange.BathFamily.sigma_identity
+#check GaussianRange.compress_admissible
+#print axioms GaussianRange.compress_admissible
+#check GaussianRange.restricted_inf_eq
+#print axioms GaussianRange.restricted_inf_eq
+#check GaussianRange.compressed_rank_pos
+#print axioms GaussianRange.compressed_rank_pos
+#check GaussianRange.pathBath_count
+#print axioms GaussianRange.pathBath_count
+#check GaussianRange.pathBath_admissible_iff
+#print axioms GaussianRange.pathBath_admissible_iff
+#check GaussianRange.pathBath_sigma_le_cyclic
+#print axioms GaussianRange.pathBath_sigma_le_cyclic
+#check GaussianRange.pathBath_cost_le_cyclic
+#print axioms GaussianRange.pathBath_cost_le_cyclic
+#check GaussianRange.path_avg_residual
+#print axioms GaussianRange.path_avg_residual
+#check GaussianRange.path_entropy_upper_exact
+#print axioms GaussianRange.path_entropy_upper_exact
+#check GaussianRange.rankTwo_exact_minimum
+#print axioms GaussianRange.rankTwo_exact_minimum
+#check GaussianRange.power_relaxation_minimum
+#print axioms GaussianRange.power_relaxation_minimum
+#check GaussianRange.factor_relaxation_minimum
+#print axioms GaussianRange.factor_relaxation_minimum

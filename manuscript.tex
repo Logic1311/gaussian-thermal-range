@@ -1,0 +1,564 @@
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\avg}[1]{\left\langle #1\right\rangle}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\opt}{\mathcal E_r(m)}
+\title{Finite-range dissipation bounds for Gaussian thermal implementations:\\ an algebraic obstruction and realizable constructions}
+\author{Research working manuscript --- authorship pending}
+\date{26 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study a scalar translation-invariant Gaussian model with normalized dissipation and dispersion $D(k)=m+2-2\cos k$, where $m>0$. Thermal implementations have arbitrary finite numbers of strictly positive-temperature channels with real finite-impulse-response amplitudes of degree at most $r$. We prove a lower bound on the normalized mean entropy production of $1/[(m+2)(m+4)r^2]$ and give an explicit quadratic-window construction with an upper bound $80/[m^2((r+2)^2+1)]$ for sufficiently large $r$. Consequently the physical infimum is of order $r^{-2}$ at fixed $m$. A finite-dimensional compression argument gives at most $r+1$ channels without increasing entropy at any frequency. A path-matrix construction improves the cyclic construction in channel count and positive-temperature domain. We also derive the exact trigonometric majorant relaxation previously introduced by Gopalakrishnan and establish its exponential separation from the physical infimum at fixed $m$. A pointwise entropy barrier strengthens this result to a quantitative strict gap at every finite range $r\ge2$; the nearest-neighbor range saturates the relaxation. At fixed range, a three-channel construction and a Dirichlet-energy lower bound prove the sharp physical critical coefficient $\lim_{m\downarrow0}m\mathcal E_r(m)=12/[(r+1)(r+2)(r+3)]$, so the physical and relaxed costs have the same leading divergence despite strict separation at positive mass. At most two distinct temperature levels, regardless of channel multiplicities, impose the exact range-independent minimum $2/[m(m+4)]$; a three-level degree-two realization halves this cost at every positive mass. Three levels are necessary and sufficient for the sharp critical coefficient when $r\ge2$. For fixed positive mass and at most $K$ distinct temperature levels, a supporting joint resource law is $\mathcal E_{r,K}(m)=\Theta_m(r^{-2}+K^{-2})$ for $r\ge1,K\ge2$. Its order also follows by composing established positive polynomial approximation with conditional-mean-preserving discretization; we do not claim a new approximation or quantization exponent. An exact finite-dimensional moment semidefinite program also characterizes the original physical infimum, with constructive recovery to arbitrary precision and rational primal--dual certificates at range two. An explicit quartic with a unique root in a specified interval and a universal dual certificate yields the attained physical range-two minimum for every positive mass. An optimal family with exactly three distinct temperatures and three channels exists, and no optimum uses fewer. The principal results, including the exact relaxed minimum, equivalence of attainable polynomial-rate costs, strict separation of the infima, the quantitative critical-mass squeeze, and the complete all-mass range-two minimum and resource theorem, are machine-verified in Lean. This is an internal, unreviewed manuscript, not a release or a claim of established novelty.
+\end{abstract}
+
+\section{Model and scope}
+The Gaussian thermal implementation problem distinguishes a stochastic marginal dynamics from the physical reservoirs that realize it. Finite interaction range also enters fluctuation-relation studies of driven non-Gaussian processes~\cite{faria}; those models do not impose the two fixed-dispersion Gaussian realization constraints used here. Gopalakrishnan~\cite{gopal} studies this distinction and gives a trigonometric majorant relaxation for the local-bath entropy cost. We fix normalized damping equal to one and unit quadratic stiffness. Let $r\ge1$ be an integer, $c=m+2$ and $D(k)=c-2\cos k$. A bath family consists of a finite index set $V$, temperatures $T_\nu>0$, and real coefficients $a_{\nu j}$, $0\le j\le r$. Define
+\begin{equation}
+P_\nu(z)=\sum_{j=0}^r a_{\nu j}z^j,\qquad w_\nu(k)=|P_\nu(e^{ik})|^2.
+\end{equation}
+Admissibility means the following two equalities hold for every real $k$:
+\begin{equation}\label{constraints}
+\sum_\nu w_\nu(k)=1,\qquad \sum_\nu T_\nu w_\nu(k)=D(k).
+\end{equation}
+The entropy cost per normalized relaxation time is
+\begin{equation}\label{entropy}
+\sigma(k)=D(k)\sum_\nu \frac{w_\nu(k)}{T_\nu}-1,
+\qquad \hat\sigma=\avg{\sigma}=\frac1{2\pi}\int_{-\pi}^{\pi}\sigma(k)\,dk.
+\end{equation}
+The infimum $\opt$ is over all such families, not over any prescribed number of channels. This is a precise FIR implementation class. Corollary~\ref{rateeq} identifies it, at the level of attainable mean costs, with arbitrary nonnegative real trigonometric rates of the same individual degree budget. In the notation of~\cite[Eq.~(10)]{gopal}, set the total damping $B=\lambda$ and use $w_\nu=M_\nu/\lambda$, $D=D_{\rm original}/\lambda$; the entropy in~\eqref{entropy} is then normalized by $\lambda$. General Golden Rule rates may include a momentum-dependent density of states; no equivalence to arbitrary such microscopic rates is assumed. At the level of an algebraic rate model, this distinction is essential: constant coupling form factors together with unrestricted momentum-dependent density factors could yield the piecewise-linear adjacent-node weights described below, with $K$ positive temperatures and entropy at most $4/[m^2(K-1)^2]$, independently of the form-factor range. This follows from the conditional variance bound of the equally spaced temperature grid and the entropy identity. It is an illustration of why a bound on the form-factor degree alone does not imply a bound on the normalized individual rate degree, not a construction of a microscopic local bath realizing those arbitrary densities. For the unit-damping scalar Ornstein--Uhlenbeck marginal the stationary covariance is $D(k)$; its reversible marginal dynamics need not reveal the cost of its individual reservoirs. The entropy functional is a modeling premise, not a derivation of thermodynamics for every coarse-graining scheme (compare~\cite{murashita,esposito}).
+
+\paragraph{A reservoir-resolved Markov realization.}
+For a fixed FIR family on a periodic lattice of $N$ sites, let $A_\nu$ be its real circulant filters and $M_\nu=A_\nu^\top A_\nu$. Their Fourier eigenvalues are $w_\nu$. Independent standard vector Wiener processes $W_\nu$ give
+\[
+ d\phi=-\sum_\nu M_\nu\phi\,dt+\sum_\nu\sqrt{2T_\nu}\,A_\nu^\top dW_\nu.
+\]
+The constraints give $\sum M_\nu=I$ and $\sum T_\nu M_\nu=D_N$, with $D_N$ the circulant matrix of symbol $D$. The stationary covariance is $D_N$. For the retained-field energy $H=\|\phi\|^2/2$, the reservoir-generator heat input is $J_\nu=\operatorname{tr}[M_\nu(T_\nu I-D_N)]$ by It\^o's formula. Thus $-\sum J_\nu/T_\nu$, divided by $N$, equals the discrete Fourier mean in~\eqref{entropy}; the continuous mean follows by a Riemann-sum limit for the fixed family. A channel denotes a reservoir type with independent site-indexed noise, not a single scalar Wiener process for the entire lattice. This phenomenological example establishes consistency of the selected heat convention; it does not prove that eliminating inertial or microscopic degrees of freedom preserves the total heat. Multiple-reservoir overdamped limits can contain hidden contributions~\cite[Sec.~III A]{murashita}. The stochastic-calculus derivation is analytic, not a Lean theorem.
+
+By expanding the square using~\eqref{constraints},
+\begin{equation}\label{square}
+\sigma(k)=\sum_\nu\frac{w_\nu(k)(T_\nu-D(k))^2}{T_\nu D(k)}\ge0.
+\end{equation}
+The associated mean variance is $\avg{\sum_\nu w_\nu(T_\nu-D)^2}=\avg{\sum_\nu w_\nu T_\nu^2}-\avg{D^2}$, with $\avg{D^2}=c^2+2$. If $T_\nu\ge t>0$ for all channels, the entropy is at most the mean variance divided by $mt$.
+At $r=0$ all weights are constant, so~\eqref{constraints} is impossible. At every $r\ge1$, $P_\pm(z)=(1\pm z)/2$, with $T_+=m$ and $T_-=m+4$, satisfies both constraints. This construction, including its cost $2/[m(m+4)]$, is already in~\cite{gopal}.
+
+\section{A universal finite-support obstruction}
+\begin{theorem}\label{lower}
+For every admissible family at $m>0$, $r\ge1$,
+\begin{equation}
+\hat\sigma\ge \frac{1}{(m+2)(m+4)r^2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For a single channel, shift its coefficients to indices $1,\ldots,r+1$ and extend by zero outside this interval; denote them by $a_j$. Put $A=\sum_j a_j^2$, $B=\sum_j a_ja_{j+1}$, $F=\sum_j a_ja_{j+2}$. Orthogonality of the Fourier harmonics in~\eqref{constraints} gives
+\begin{equation}\label{lags}
+\sum_\nu T_\nu A_\nu=c,\quad \sum_\nu B_\nu=0,\quad
+\sum_\nu T_\nu B_\nu=-1,\quad \sum_\nu F_\nu=0.
+\end{equation}
+In particular the last identity also holds when $r=1$, where every lag-two coefficient vanishes. Write $d=T-c$, $h_j=d a_j+a_{j-1}+a_{j+1}$ and $q_j=(j-1-r/2)a_j$. All these sequences have finite support. Expanding and reindexing the finite sum gives
+\begin{align}
+K&=\sum_j(q_jh_{j+1}-q_{j+1}h_j)\\
+ &= -dB-2F.
+\end{align}
+Indeed the terms involving $d$ have coefficient $q_ja_{j+1}-q_{j+1}a_j=-a_ja_{j+1}$; the diagonal terms telescope, and the lag-two terms have coefficient $q_ja_{j+2}-q_{j+2}a_j=-2a_ja_{j+2}$. From~\eqref{lags}, $\sum_\nu K_\nu=1$.
+Since $|j-1-r/2|\le r/2$ on the support, Cauchy--Schwarz gives $|K|\le 2\|q\|_2\|h\|_2\le r\sqrt{A}\|h\|_2$. With $H=\sum_\nu\|h_\nu\|_2^2/T_\nu$, weighted Cauchy--Schwarz therefore yields
+\begin{equation}
+1\le r\sqrt{\left(\sum_\nu T_\nu A_\nu\right)H}=r\sqrt{cH}.
+\end{equation}
+The polynomial $[(T-c)z+z^2+1]P_\nu(z)$ has exactly the residual coefficients $h_j$. On $|z|=1$ this polynomial equals $z(T-D(k))P_\nu(z)$. Parseval and~\eqref{square} imply
+\begin{equation}
+H=\avg{\sum_\nu |P_\nu|^2(T_\nu-D)^2/T_\nu}
+=\avg{D\sigma}\le(c+2)\hat\sigma.
+\end{equation}
+Combining these inequalities proves the bound.
+\end{proof}
+
+\section{Explicit realizable upper bounds}
+Let $n=r+1$ and let a real window $g_0,\ldots,g_{n-1}$ satisfy $\sum_jg_j^2=1$ and $\rho=\sum_{j=0}^{n-2}g_jg_{j+1}>0$. Set $N=2n+3$, $\theta_\ell=2\pi\ell/N$, $0\le\ell<N$. Use two real channels per $\ell$ with coefficients
+\begin{equation}
+a_{\ell j}=\frac{g_j\cos(j\theta_\ell)}{\sqrt N},\qquad b_{\ell j}=\frac{g_j\sin(j\theta_\ell)}{\sqrt N},\quad
+T_\ell=c-\frac{2\cos\theta_\ell}{\rho}.
+\end{equation}
+Writing $C_d=\sum_jg_jg_{j+d}$ over valid indices, the combined weight is
+\begin{equation}
+W_\ell(k)=\frac1N\left(1+2\sum_{d=1}^r C_d\cos(d\theta_\ell)\cos(dk)\right).
+\end{equation}
+This follows directly from the cosine difference formula. Discrete Fourier orthogonality (no aliasing since $N>r+1$) implies $\sum_\ell W_\ell=1$ and $\sum_\ell \cos\theta_\ell W_\ell=\rho\cos k$. Hence both physical identities hold identically. The weights are sums of actual squared real-coefficient amplitudes. Their mean is $1/N$ per pair and $N^{-1}\sum_\ell T_\ell^2=c^2+2/\rho^2$. Thus the mean variance is $2(\rho^{-2}-1)$, and the minimum temperature is exactly $c-2/\rho$, attained at $\ell=0$. If this is positive,
+\begin{equation}\label{generalbound}
+\hat\sigma_{\rm cyc}\le \frac{2(\rho^{-2}-1)}{m(c-2/\rho)}.
+\end{equation}
+
+\begin{theorem}\label{upper}
+Let $L=(r+2)^2+1$. If $L>5+10/m$, there is an admissible family of $4r+10$ real channels with
+\begin{equation}
+\hat\sigma\le\frac{10(2L-5)}{m(L-5)[m(L-5)-10]}.
+\end{equation}
+For $L\ge10+20/m$ this upper bound is at most $80/(m^2L)$.
+\end{theorem}
+\begin{proof}
+Choose $u_j=(j+1)(n-j)$ and $g_j=u_j/\sqrt S$, where $S=\sum_j u_j^2$. The power sums give $S=n(n+1)(n+2)L/30$, with $L=n^2+2n+2$. With $u_{-1}=u_n=0$, $u_j-u_{j-1}=n-2j$ for $0\le j\le n$. Therefore $\sum_{j=0}^n(u_j-u_{j-1})^2=n(n+1)(n+2)/3=2S-2\sum_j u_ju_{j+1}$. It follows that $\rho=1-5/L$ and $T_{\min}=m-10/(L-5)$. This proves the exact positivity criterion for this cyclic family and the first bound by~\eqref{generalbound}. At the sufficient threshold, $L-5\ge L/2$ and $m(L-5)-10\ge mL/2$; use $10(2L-5)\le20L$ to obtain the second bound.
+\end{proof}
+
+\begin{corollary}[Optimal order at fixed mass]\label{theta}
+For $m>0$ fixed, $\opt=\Theta(r^{-2})$. More explicitly, for $r\ge1$ with $(r+2)^2+1\ge10+20/m$,
+\begin{equation}
+\frac1{(m+2)(m+4)r^2}\le\opt\le\frac{80}{m^2[(r+2)^2+1]}.
+\end{equation}
+\end{corollary}
+This is a statement about the unrestricted finite-channel infimum. It does not establish the sharp large-range limiting coefficient, uniformity as $m\downarrow0$, or attainment.
+
+\section{Channel compression}
+\begin{theorem}\label{compress}
+Every admissible finite-channel FIR realization can be replaced by one with at most $\operatorname{rank}(A)\le r+1$ real channels, preserving~\eqref{constraints} and not increasing~\eqref{entropy} at any frequency. Consequently restricting the channel count to at most $r+1$ leaves $\opt$ unchanged.
+\end{theorem}
+\begin{proof}
+Let $A\in\R^{q\times n}$ contain the coefficient rows, $T$ denote the positive diagonal temperature matrix, and $x=(1,z,\ldots,z^{n-1})^\top$. Choose a real orthonormal basis $U$ of the column space of $A$, of dimension $d\le n$. Write $A=UR$, $U^\top U=I_d$. The normalization excludes $d=0$. The matrix $M=U^\top TU$ is positive definite; take a real spectral decomposition $M=V\Lambda V^\top$. Define $A'=V^\top R$, $T'=\Lambda$. Every new temperature is strictly positive, and both coefficient Gram matrices satisfy
+\begin{equation}
+A'^\top A'=A^\top A,\qquad A'^\top T'A'=A^\top TA.
+\end{equation}
+These identities preserve both constraints when evaluated on $x$. Put $X=U-TUM^{-1}$. Expanding gives the exact certificate
+\begin{equation}\label{certificate}
+U^\top T^{-1}U-M^{-1}=X^\top T^{-1}X\succeq0.
+\end{equation}
+The compressed inverse-temperature Gram is $R^\top M^{-1}R$. Congruence with $R$ proves its difference from the original (original minus compressed) is positive semidefinite. Real PSD matrices are PSD on complex vectors by separating real and imaginary parts. Hence multiplying by $D>0$ proves the pointwise cost comparison. Integration gives mean-cost monotonicity. The restricted cost set is a subset of the unrestricted set, while compression supplies a restricted cost no greater than each unrestricted cost. Both are nonempty and bounded below; the two infima are equal.
+\end{proof}
+The underlying inverse compression inequality is classical (operator Jensen~\cite{hansen}); the conclusion here concerns the particular physical Gram constraints, not a new general matrix inequality. Neither minimal channel count nor attainment is claimed.
+
+\section{Path spectral construction}
+Let $J$ be the adjacency matrix of the path on $n$ vertices, $G=\operatorname{diag}(g_0,\ldots,g_{n-1})$, and $M=cI-J/\rho$. The usual sine eigenvectors $\sin((j+1)k\pi/(n+1))$ vanish at the two boundary sites and satisfy the adjacency recurrence. Their distinct eigenvalues $2\cos(k\pi/(n+1))$ for $1\le k\le n$ give a complete orthogonal basis~\cite{brouwer}. Thus for $\rho>0$ the exact positivity condition is
+\begin{equation}\label{pathpos}
+c>2\cos(\pi/(n+1))/\rho.
+\end{equation}
+When this holds, use $M=V\Lambda V^\top$ and $A'=V^\top G$, $T'=\Lambda$. The Grams are $G^2$ and $GMG$, giving $x^*G^2x=1$ and $x^*GMGx=c-2\Re z$ for all $|z|=1$ by the definition of $\rho$. The mean weighted second temperature moment is $\operatorname{tr}(GM^2G)$ by Fourier orthogonality. Each path endpoint has degree one and every interior vertex degree two, so
+\begin{align}
+\avg{\sum_\nu w_\nu(T_\nu-D)^2}
+&=\operatorname{tr}(GM^2G)-(c^2+2)\\
+&=\frac{2-g_0^2-g_{n-1}^2}{\rho^2}-2.
+\end{align}
+Consequently the mean entropy is at most this nonnegative expression divided by $m[c-2\cos(\pi/(n+1))/\rho]$.
+
+For a pointwise comparison, write $C=cI-J_{\rm cycle}/\rho$ on $N=2n+3$ coordinates. Let $E$ include the first $n$ coordinates. Then $M=E^\top CE$. The real cosine/sine cyclic frame is a spectral resolution of the cycle; its inverse-temperature Gram is $GE^\top C^{-1}EG$. If $C\succ0$, apply~\eqref{certificate} with $U=E$ and $T$ replaced by $C$ (the algebra uses only symmetry and positivity). It follows that $\sigma_{\rm path}(k)\le\sigma_{\rm cyc}(k)$ for every $k$. This is independent of the variance upper-bound comparison. The path uses $n$ channels instead of $2N$.
+
+For the quadratic window, $n=2$ gives $\rho=1/2$ and minimum path temperature $m$. At $n=3$, $\rho=12/17$ and the path is positive iff $m>17\sqrt2/12-2$. Hence $m=1/100$ is feasible and $m=1/10000$ is not; the cyclic threshold is $m>5/6$. At the exact cyclic boundary $n=40$, $m=10/1677$, a cyclic temperature vanishes but the path remains positive. In general the cyclic boundary $c=2/\rho$ gives strictly positive path minimum. The cyclic sufficient condition is not the exact path condition.
+For comparison the classical sine window $g_j=\sqrt{2/(n+1)}\sin((j+1)\pi/(n+1))$ has $\rho=\cos(\pi/(n+1))$, so its path minimum temperature is exactly $m$ for all $m>0$. Its mean variance is $2\tan^2(\pi/(n+1))(1-2/(n+1))$. Thus its entropy bound is at most $8\pi^2/[m^2(r+2)^2]$. The window itself and its extremal correlation property are classical~\cite{okayasu}.
+
+\section{Real spectral factors and the polynomial-rate class}
+The following constructive version of classical Fej\'er--Riesz factorization (see also~\cite{dritschel,dimitrov}) is included to make the degree and real-coefficient restrictions explicit.
+ 
+\begin{proposition}[Real factorization with an exact degree budget]\label{rf}
+If $Q\in\R[x]$ has degree at most $d$ and $Q(x)\ge0$ for all $x\in[-1,1]$, there exists $P\in\R[z]$ of degree at most $d$ such that $Q(\Re z)=|P(z)|^2$ on the unit circle.
+\end{proposition}
+\begin{proof}
+The zero and nonnegative constant polynomials are immediate. Factor a nonconstant real polynomial using a complex root and proceed by degree induction. For a real root $a\le-1$, remove $x-a$; for $a\ge1$, remove $a-x$, absorbing its sign into the quotient. Each divisor is nonnegative on the interval and strictly positive away from its endpoint root. The quotient is nonnegative by continuity. For $-1<a<1$, the root has even multiplicity: if the quotient by $x-a$ were nonzero at $a$, the polynomial would change sign there. Remove $(x-a)^2$ and again use continuity for the quotient. For a nonreal root $a+ib$, remove the positive real factor $(x-a)^2+b^2$, using its conjugate root. In each case the remaining real polynomial is nonnegative and has smaller degree.
+
+Every nonnegative linear factor $A+Bx$ has $A\ge |B|$. Let $u=(\sqrt{A+B}+\sqrt{A-B})/2$ and $v=(\sqrt{A+B}-\sqrt{A-B})/2$. Then $|u+vz|^2=A+B\Re z$. For a quadratic $(x-a)^2+b^2$ (also allowing $b=0$), set
+\[
+s_\pm=\sqrt{(a\pm1)^2+b^2},\quad
+u=(s_++s_-)/2,\quad v=(s_+-s_-)/2,\quad
+h=\sqrt{u^2-1}.
+\]
+The triangle inequality gives $u\ge1$; directly $uv=a$ and $u^2+v^2=a^2+b^2+1$. The polynomial
+\[
+P(z)=\tfrac12(u-h)-vz+\tfrac12(u+h)z^2
+\]
+satisfies $|P(e^{ik})|^2=(u\cos k-v)^2+h^2\sin^2 k=(\cos k-a)^2+b^2$. Multiply the factors furnished by the induction. Each degree budget is additive, and no strict positivity assumption is needed.
+\end{proof}
+
+\begin{corollary}[Equality of physical cost sets]\label{rateeq}
+Allow arbitrary finite families of nonnegative real trigonometric rates of degree at most $r$, retaining the same temperatures and constraints~\eqref{constraints}. Their attainable mean costs are exactly those of real FIR families.
+\end{corollary}
+\begin{proof}
+Every FIR weight is an even trigonometric polynomial of degree at most $r$. For the reverse direction replace each rate by its average under $k\mapsto-k$. Both constraints remain true because the constant and $D$ are even; the normalized mean cost is unchanged. Every resulting rate is an ordinary polynomial of degree at most $r$ in $\cos k$, by the recurrence $T_{j+2}(x)=2xT_{j+1}(x)-T_j(x)$, $T_0=1,T_1=x$. Apply Proposition~\ref{rf} to each rate separately. This produces an actual real FIR family with the same temperature vector and channel count, not merely a majorant.
+\end{proof}
+
+
+\section{Exact majorant relaxation and its gap}
+The polynomial relaxation in~\cite[Eq.~(12)--(14)]{gopal} minimizes $\avg{Dg-1}$ over real trigonometric polynomials $g$ of degree at most $r$ satisfying $g\ge1/D$. Every admissible FIR family produces such a majorant $g=\sum_\nu w_\nu/T_\nu$ by~\eqref{square}. The converse does not follow from separate spectral factorization of a majorant. Here is a self-contained reduction of its known optimal value to a rank-two eigenvalue calculation.
+
+Let $\kappa=\operatorname{arcosh}(1+m/2)$, $t=e^\kappa>1$, and $p=r+1$. The exact lattice identity is $D(z)=t+t^{-1}-z-z^{-1}$; $\kappa=2\operatorname{arsinh}(\sqrt m/2)$, not exactly $\sqrt m$. The precision-decay length is $\xi=1/\kappa$ (the one-dimensional CMI Markov length in the convention of~\cite[Sec.~3.1]{gopal} is $\xi/2$). Symmetrize $g$ under $k\mapsto-k$ without altering feasibility or cost. Then $q=Dg-1$ is nonnegative, real even and of Laurent degree at most $p$, with $q(t)=q(t^{-1})=-1$. In the machine proof we instead express even Laurent polynomials in $x=(z+z^{-1})/2$ using the cosine-polynomial basis, whose degree at index $j$ is exactly $j$. The root condition becomes $q(c/2)=-1$ in the ordinary-polynomial representation, and division of $q+1$ by $c-2x$ yields a real polynomial of degree at most $r$. Real Fej\'er--Riesz factorization~\cite[Theorem 4]{dimitrov} gives $q(z)=f(z)f(z^{-1})$, where $f$ is a real polynomial of degree at most $p$. Conversely, any such nonnegative $q$ with the stated root constraints yields a feasible $g$: $z^p(q+1)$ has roots $t,t^{-1}$, so division by $D(z)=-z^{-1}(z-t)(z-t^{-1})$ gives a Laurent polynomial with support $[-r,r]$. On the circle, $D>0$ and $q\ge0$ imply $g\ge1/D$.
+
+Let $a$ be the coefficient vector of $f$, and $u=(t^j)_{j=0}^{p}$, $v=(t^{-j})_{j=0}^{p}$. The mean of $q$ is $\|a\|^2$ and $q(t)=-1$ is equivalent to $a^\top Ha=-1$, where $H=(uv^\top+vu^\top)/2$. Its two nonzero eigenvalues are $(u^\top v\pm\|u\|\|v\|)/2$, with eigenvectors $u/\|u\|\pm v/\|v\|$. They have opposite signs because $t>1$ and $p\ge1$. The minimum norm is achieved by scaling the negative eigenvector, and Rayleigh's inequality proves no smaller norm is possible. Since $u^\top v=p+1$ and $\|u\|\|v\|=\sum_{j=0}^p t^{2j-p}$, the relaxed optimum is exactly
+\begin{equation}\label{relaxed}
+L_r(m)=\frac{2}{\sinh((r+2)\kappa)/\sinh\kappa-(r+2)}.
+\end{equation}
+For fixed $m>0$, $L_r(m)\sim4\sinh\kappa\,e^{-(r+2)\kappa}$. Corollary~\ref{theta} gives the relative gap $\opt/L_r(m)=\Theta(e^{\kappa r}/r^2)$. The original paper~\cite{gopal} emphasizes fixed range and growing correlation length, and explicitly does not assert higher-range physical attainability in its Fig.~2 caption. Equation~\eqref{relaxed} is not our novelty claim; the physical algebraic obstruction and matching realizability yield the gap.
+
+Corollary~\ref{rateeq} identifies the exact polynomial-rate scope of the separation. This does not assert that every finite-range microscopic Golden Rule implementation has a polynomial rate: a nonconstant bath density of states requires separate analysis.
+
+\section{Strict separation at every higher finite range}\label{finitegap}
+The asymptotic gap can be strengthened without invoking a limiting argument. Define
+\[
+S_r=\sum_{j=0}^{r}j^2=\frac{r(r+1)(2r+1)}{6},\qquad
+\delta_r=\frac{1}{c(c+2)S_r},\qquad h=\frac{c^2}{4}-1=\frac{m(m+4)}4.
+\]
+\begin{theorem}[Pointwise physical barrier]\label{pointwisebarrier}
+For every admissible FIR family with $m>0$, $r\ge1$, and every real frequency $k$,
+\begin{equation}\label{pointwisegap}
+\sigma(k)\ \ge\ \frac{\sin^2 k}{cS_rD(k)}\ \ge\ \delta_r\sin^2 k.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write $z=e^{ik}$ and $E_\nu=zP_\nu'(z)=\sum_j j a_{\nu j}z^j$. Let $b_\nu=\Im(E_\nu\overline{P_\nu})$. Differentiation of the two identities in~\eqref{constraints} gives $\sum_\nu b_\nu=0$ and $\sum_\nu T_\nu b_\nu=-\sin k$ because $d|P_\nu|^2/dk=-2b_\nu$. These are algebraic identities: the Lean proof instead uses the Euler derivative $z\,d/dz$ of the Laurent polynomial identity after multiplication by $z^r$. The weighted derivative energy satisfies
+\[
+J=\sum_\nu T_\nu |E_\nu|^2
+\le S_r\sum_\nu T_\nu\sum_j a_{\nu j}^2=c S_r,
+\]
+by the finite Cauchy--Schwarz inequality and the mean of the second normalization. Put $H=\sum_\nu (T_\nu-D)^2|P_\nu|^2/T_\nu=D\sigma$. Weighted Cauchy--Schwarz, or the nonnegativity of
+\[
+\sum_\nu\left|
+ \frac{(T_\nu-D)P_\nu}{\sqrt{T_\nu}}
+ + i\ell\sqrt{T_\nu}E_\nu
+ \right|^2
+=H-2\ell\sum_\nu(T_\nu-D)b_\nu+\ell^2J,
+\]
+implies $H+2\ell\sin k+\ell^2 cS_r\ge0$ for all real $\ell$. Choose $\ell=-\sin k/(cS_r)$. This proves the first inequality, including all points where the sine vanishes, and $0<D\le c+2$ proves the second.
+\end{proof}
+
+\begin{theorem}[Strict finite-range relaxation gap]\label{finitegapthm}
+For every $m>0$ and integer $r\ge1$,
+\begin{equation}\label{gapbound}
+\mathcal E_r(m)\ \ge\
+ L_r(m)+\delta_r\bigl(\tfrac12-hL_r(m)\bigr).
+\end{equation}
+In particular $\mathcal E_1(m)=L_1(m)=2/[m(m+4)]$, whereas $\mathcal E_r(m)>L_r(m)$ for every $r\ge2$. The strict inequality also holds for the individual polynomial-rate class of Corollary~\ref{rateeq}.
+\end{theorem}
+\begin{proof}
+For an admissible family write $g=\sum_\nu w_\nu/T_\nu$, an even trigonometric polynomial of degree at most $r$. Use $x=\cos k$. Because $(c-2x)(c/4+x/2)=h+1-x^2$, subtracting the barrier in~\eqref{pointwisegap} leads to the new degree-at-most-$r$ scalar majorant
+\[
+g_*(k)=
+\frac{g(k)-\delta_r(c/4+\cos k/2)}{K},
+\qquad K=1-\delta_r h.
+\]
+Here $\delta_r h=m/(4cS_r)<1/4$, so $K>0$. Indeed,
+\[
+Dg_*-1=\frac{\sigma-\delta_r\sin^2 k}{K}\ge0.
+\]
+Consequently $g_*\ge1/D$. The exact majorant minimum~\eqref{relaxed} and $\avg{\sin^2 k}=1/2$ give
+\[
+\frac{\hat\sigma-\delta_r/2}{K}\ge L_r(m).
+\]
+The result holds for every admissible family, so it passes to the physical infimum without assuming attainment.
+
+To prove strictness, let $p=r+1$ and $t>1$ with $c=t+t^{-1}$. Write
+\[
+B_p=\sum_{j=0}^p t^{2j}-(p+1)t^p
+=\tfrac12\sum_{j=0}^p(t^j-t^{p-j})^2.
+\]
+The endpoint terms yield $B_p\ge(t^p-1)^2$. For $p>2$, $t^p>t^2>1$, and the factorization
+\[
+(t^p-1)^2t^2-(t^2-1)^2t^p
+=(t^p-t^2)(t^{p+2}-1)>0
+\]
+shows $B_p>4ht^p$, since $(t^2-1)^2=4ht^2$. Thus $hL_r=2ht^p/B_p<1/2$. For $p=2$, $B_2=(t^2-1)^2$ and $L_1=1/(2h)$. The nearest-neighbor realization in the model section has exactly this average, by direct substitution in~\eqref{entropy}. Finally use equality of the physical cost sets for nonnegative individual polynomial rates.
+\end{proof}
+
+Theorem~\ref{finitegapthm} excludes saturation of the bound in Fig.~2 of~\cite{gopal} within the normalized degree-bounded individual-rate class, for every positive mass and every range greater than one. This is stronger than failure of a particular proposed realization: an entire sequence of admissible families cannot converge in mean cost to the relaxed minimum at a fixed such range. This statement is not a claim about microscopic couplings with arbitrary nonpolynomial densities of states. The new correction is of order $r^{-3}$ at fixed mass; the separate finite-support theorem still gives the stronger large-$r$ order $r^{-2}$.
+
+\paragraph{Relation to other entropy-production bounds.}
+For an Ornstein--Uhlenbeck process, Godr\`eche and Luck~\cite{godreche} express the entropy production through stationary currents and the antisymmetric Onsager component (Eqs.~(2.25)--(2.28)); that observable is not our channel-resolved cost. Li and Cates~\cite{licates} distinguish field-level entropy production from more resolved dynamics in scalar Langevin models. Horowitz, Zhou and England~\cite[Eq.~(13)]{horowitzzhou}, and Horowitz and England~\cite[Eqs.~(11)--(14)]{horowitz}, bound the dissipation of ancillary control using the uncontrolled relative-entropy decay. Nardini et al.~\cite[Eq.~(30) and Sec.~V]{nardini} distinguish entropy inferred from different retained fields and formulate a spectral fluctuation--dissipation relation. Esposito~\cite[Eqs.~(71)--(77)]{esposito} separates entropy production from visible and hidden transitions under Markov-state coarse graining. These results concern different optimization or observation constraints. The cutoff-sensitive CMI in~\cite{chen} also concerns a different question: detailed-balance-breaking perturbations of a critical state, rather than a positive-mass Gaussian covariance fixed throughout a reservoir optimization.
+
+\paragraph{Positive approximation and the novelty claim.}
+For an evenized family, put $x=D(k)$ and let $W_\nu(x)=w_\nu(k)$. The map $f\mapsto \sum_\nu W_\nu(x) f(T_\nu)$ is a positive polynomial operator reproducing constants and the identity function. The entropy objective is its weighted mean Jensen defect on $f(t)=1/t$. Classical Korovkin-type saturation results constrain positive polynomial approximation at order $r^{-2}$ in uniform norm~\cite[Sec.~3]{pinkus}. Moreover, the affine-preserving operators in~\cite[Lemmas~2.12--2.13 and Sec.~2.5]{kopotun} have second-moment defect $O(r^{-2})$. Composing such an operator with positive piecewise-linear interpolation on a grid of mesh $1/r$ preserves affine functions and adds at most $1/(4r^2)$ to this defect. Rescaling the grid to $[m,m+4]$ gives nonnegative degree-bounded individual rates and an alternative $O_m(r^{-2})$ physical upper bound by Corollary~\ref{rateeq} and the variance bound. This analytic comparison is not an additional Lean result. Thus neither the approximation exponent nor the existence of same-order positive operators is a priority claim. Our candidate contributions are the explicit physical certificates, the strict separation of the weighted reciprocal-cost infimum from the exact scalar relaxation, and the constructive sharp fixed-range critical divergence proved below, subject to independent review.
+
+\section{Sharp fixed-range critical-mass asymptotics}\label{criticalmass}
+The strict gap at positive mass does not by itself decide whether the relaxed critical divergence has the correct physical coefficient. We now show that it does, by bounding the original infimum from both sides and constructing actual reservoirs. Define $D_0(k)=2-2\cos k$ and
+\[
+C_r=\frac{12}{(r+1)(r+2)(r+3)}.
+\]
+\begin{theorem}[Sharp physical critical coefficient]\label{criticalthm}
+For every integer $r\ge1$ and every $m>0$,
+\begin{equation}\label{criticalbounds}
+\frac{C_r}{m}-1\ \le\ \mathcal E_r(m)\ \le\ \frac{C_r}{m}+4(r+1)^2.
+\end{equation}
+The upper bound is realized as a cost bound by a family of three real FIR channels at strictly positive temperatures. In particular, for each fixed $r$,
+\begin{equation}\label{criticallimit}
+\lim_{m\downarrow0}m\mathcal E_r(m)=C_r,
+\qquad \lim_{m\downarrow0}\frac{\mathcal E_r(m)}{L_r(m)}=1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For a real polynomial $P$ of degree at most $r$, write $(1-z)P(z)=\sum_{j=0}^{r+1}f_jz^j$. Evaluation and differentiation at $z=1$ give $\sum_j f_j=0$ and $\sum_j jf_j=-P(1)$. Cauchy--Schwarz and Parseval therefore imply
+\begin{align}
+|P(1)|^2
+&=\left|\sum_{j=0}^{r+1}\left(j-\frac{r+1}{2}\right)f_j\right|^2\\
+&\le \frac{(r+1)(r+2)(r+3)}{12}\avg{D_0|P|^2}.
+\end{align}
+This is the classical finite-dimensional Dirichlet-energy endpoint extremal calculation. At $k=0$, admissibility and the entropy identity~\eqref{square} give $\sum_\nu w_\nu(0)/T_\nu\ge1/m$. Since $D=m+D_0$ and $T_\nu>0$, the cost of every admissible family satisfies
+\[
+1+\hat\sigma\ge\sum_\nu\frac{\avg{D_0w_\nu}}{T_\nu}
+\ge C_r\sum_\nu\frac{w_\nu(0)}{T_\nu}\ge\frac{C_r}{m}.
+\]
+For an upper bound let $n=r+1$, $S=n(n+1)(n+2)/6$ and choose the cold polynomial $P_0(z)=\sum_{j=0}^r a_jz^j$ with $a_j=(j+1)(n-j)/S$. Its coefficients are strictly positive, sum to one, and the coefficients of $(1-z)P_0(z)$ are $(n-2j)/S$, $0\le j\le n$. Thus $\avg{D_0w_0}=2/S=C_r$ for $w_0=|P_0|^2$. Set $R=1-w_0$. On the circle,
+\[
+R=\frac12\sum_{i,j=0}^r a_i a_j|z^i-z^j|^2.
+\]
+Keeping only the ordered pair $(0,1)$ gives $R\ge a_0a_1D_0/2$, and $|1-z^d|\le d|1-z|$ for integer $d\ge0$ gives $R\le(r+1)^2D_0$. These inequalities hold at $z=1$ as well, without dividing by $D_0$ or $R$. Choose
+\[
+A=\frac{1}{(r+1)^2},\qquad B=A+1+\frac{2}{a_0a_1},
+\qquad A R\le D_0\le B R.
+\]
+Then the two hot weights
+\[
+w_1=\frac{B R-D_0}{B-A},\qquad w_2=\frac{D_0-A R}{B-A}
+\]
+are nonnegative real even trigonometric polynomials of degree at most $r$. Proposition~\ref{rf} gives real FIR factors of that degree, including at zeros. Their sum is $R$ and $Aw_1+Bw_2=D_0$. With temperatures $m,m+A,m+B$, all three actual channels satisfy both identities~\eqref{constraints} at all frequencies. In particular $0\le w_0\le1$ and $0\le R\le1$. The hot contribution to the inverse-temperature sum is at most $1/(m+A)$, whence
+\[
+1+\hat\sigma\le C_r/m+\avg{w_0}+\frac{m+4}{m+A}
+\le C_r/m+1+4/A,
+\]
+using $0<A\le4$. Taking the infimum establishes~\eqref{criticalbounds}; it makes no claim of an optimizing family at positive mass. Multiplication by $m$ yields the squeeze $C_r-m\le m\mathcal E_r(m)\le C_r+4m(r+1)^2$. Finally, at fixed $r$, Taylor expansion of~\eqref{relaxed} gives $L_r(m)\sim C_r/\kappa^2\sim C_r/m$, proving~\eqref{criticallimit}.
+\end{proof}
+The relaxed coefficient is already implicit in~\cite[Eq.~(15)]{gopal}. The candidate new contribution here is its constructive \emph{physical} attainability to leading order for arbitrary fixed range, with an explicit finite-mass error bound. This addresses a different question from exact saturation, excluded by Theorem~\ref{finitegapthm} for every positive mass and $r\ge2$. In terms of the precision length $\xi=1/\kappa$, the physical divergence is $C_r\xi^2$ at fixed $r$. Neither the large-$r$ coefficient at fixed positive mass nor a uniform joint critical limit follows from this theorem. The degree hypothesis is still the individual-rate constraint of Corollary~\ref{rateeq}; no claim is made for arbitrary nonpolynomial microscopic rates. The three-channel construction does not assert finite-mass optimality. Its cold amplitude is nonzero at $z=1$; off $z=1$, the pairwise identity used in the proof gives $R\le r^2 D_0/2$ (by telescoping $z^d-1$), so $AR<D_0<BR$. Both hot rates are then strictly positive. The construction uses three distinct positive temperatures and three nonzero FIR amplitudes, not hidden extra channels. The next section establishes the minimum number of distinct temperatures needed for the sharp critical coefficient.
+
+\section{Temperature levels as a resource}\label{temperaturelevels}
+We now separate the number of distinct temperature values from the number of amplitudes. Write $\mathcal E_{r,\le2T}(m)$ for the infimum over admissible finite families whose temperatures take at most two distinct values, with no limit on the multiplicity of either value.
+\begin{theorem}[Exact two-level minimum and a strict three-level advantage]\label{temperaturethm}
+For every integer $r\ge1$ and $m>0$ the two-level minimum is attained and
+\begin{equation}\label{twolevelmin}
+ \mathcal E_{r,\le2T}(m)=\frac{2}{m(m+4)}.
+\end{equation}
+For every $r\ge2$ and $m>0$ there is a family with precisely three distinct positive temperatures and three real FIR amplitudes of degree at most two whose cost is $1/[m(m+4)]$. In particular,
+\begin{equation}\label{threelevelhalf}
+ \mathcal E_r(m)\le\frac{1}{m(m+4)}=\tfrac12\mathcal E_{r,\le2T}(m).
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let the two possible temperatures be $a,h$ with $0<a\le h$. The two constraints evaluated at $k=0,\pi$ give $a\le m$ and $h\ge m+4$. In particular one distinct level is infeasible. Every such family satisfies $ah/T_\nu=a+h-T_\nu$. Multiplying by $w_\nu$ and summing gives $ahg=a+h-D$ for $g=\sum w_\nu/T_\nu$. Thus
+\[
+ \sigma=(D/a-1)(1-D/h)\ge (D/m-1)(1-D/(m+4)).
+\]
+The factors are nonnegative and the inequalities follow from the two endpoint bounds. The right-hand side is precisely the cost density of the nearest-neighbor witness, available at every $r\ge1$. Averaging gives~\eqref{twolevelmin}. No assumption on the number of channels or on temperatures lying inside the dispersion band is needed.
+
+For the second part set $s=(1-\cos k)/2$ and take temperatures $m,m+2,m+4$ with rates $(1-s)^2,2s(1-s),s^2$, respectively. Explicit real factors are $(1+z)^2/4$, $(1-z^2)/(2\sqrt2)$ and $(1-z)^2/4$. The rates are nonnegative, sum to one, and have temperature mean $m+4s=D$. Let $g_2$ denote the nearest-neighbor inverse-temperature mixture and $g_3$ this three-level mixture. Direct subtraction yields
+\[
+ g_2-g_3=\frac{8s(1-s)}{m(m+2)(m+4)}.
+\]
+Since $\avg{Ds(1-s)}=(m+2)/8$, the mean entropy reduction is exactly $1/[m(m+4)]$. This proves~\eqref{threelevelhalf}. The latter cost is a witness, not an asserted minimum over three levels or the unrestricted class.
+\end{proof}
+\begin{corollary}[Minimal temperature cardinality at criticality]\label{criticalcount}
+For each fixed $r\ge2$, at least three distinct temperature levels are necessary, and three suffice, to attain the sharp leading coefficient $C_r$ of Theorem~\ref{criticalthm} as $m\downarrow0$. For $r=1$, two suffice. These conclusions allow temperature values, amplitudes and their multiplicities to depend on $m$. In particular the critical three-channel family strictly improves every two-level family when $0<m\le 1/[40(r+1)^2]$, $r\ge2$.
+\end{corollary}
+\begin{proof}
+Every two-level cost obeys $m\hat\sigma\ge2/(m+4)$, which tends to $1/2$. For $r\ge2$, $C_r\le1/5<1/2$. The explicit three-channel family of Theorem~\ref{criticalthm} reaches $C_r$ by the squeeze there. At $r=1$ the nearest-neighbor family gives the sharp coefficient $1/2$, and one level is impossible by the endpoint argument. At the stated small-mass threshold the critical witness has $m\hat\sigma\le C_r+4m(r+1)^2\le3/10$, whereas $2/(m+4)>3/10$ since the threshold implies $m\le1$. No interchange of limit and infimum is required.
+\end{proof}
+The degree-two witness is classical Bernstein interpolation of the reciprocal-temperature function, whose convexity already gives the pointwise improvement over degree one (see~\cite[Corollary~2.2]{bernsteinmonotone}). The exact Fourier mean and the two-level restriction are elementary model-specific consequences; they are not claims of a new general approximation inequality. The resource characterization for the sharp physical critical coefficient also uses the nontrivial all-family endpoint bound and realizability construction, not Bernstein monotonicity alone.
+
+\section{Joint range and temperature-level resource law}\label{sec:resources}
+Let $K\ge2$ be an integer. Write $\mathcal E_{r,K}(m)$ for the infimum over the original admissible families that use at most $K$ distinct scalar temperature values; arbitrary multiplicities at each value remain allowed. Equivalently there exists a $K$-entry real palette containing every actual temperature. Unused or repeated entries are harmless, and all actual temperatures remain strictly positive. The nearest-neighbor family ensures nonemptiness.
+\begin{theorem}[Joint resource scaling]\label{jointresource}
+For every $m>0$ there exist $A(m),B(m)>0$, independent of $r,K$, such that for all integers $r\ge1$ and $K\ge2$,
+\begin{equation}\label{jointresourcebounds}
+\frac{A(m)}{\min(r,K)^2}\le \mathcal E_{r,K}(m)\le
+\frac{B(m)}{\min(r,K-1)^2}.
+\end{equation}
+In particular $\mathcal E_{r,K}(m)=\Theta_m(r^{-2}+K^{-2})$. One explicit temperature-only lower bound for every admissible family with a $K$-entry palette is
+\begin{equation}\label{palettelower}
+\hat\sigma\ge\frac{1}{64\pi(m+4)^2 K^2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $M=m+4$, $\delta=1/(4K)$ and $C=\delta^2/(2M^2)$. If $t,d>0$, $d\le M$, and $|t-d|\ge\delta$, then $(t-d)^2/(td)\ge C$. Indeed, for $t\le2M$ the denominator is at most $2M^2$. Otherwise $t\ge2d$ and $2(t-d)^2-td=(t-2d)(2t-d)\ge0$, so the ratio is at least $1/2\ge C$. This covers exterior temperatures without an assumed upper cap.
+
+For a palette $(\tau_i)_{i=1}^K$, let
+\[
+ H_i(x)=\max(0,2-|x-\tau_i|/\delta),\qquad G(x)=1-\sum_{i=1}^K H_i(x).
+\]
+If $|d-\tau_i|\le\delta$ for some $i$, then $G(d)\le0$. Otherwise every actual temperature is at distance at least $\delta$ from $d$. Using~\eqref{square} and normalization, in the latter case $\sigma\ge C$; in the former $\sigma\ge0$. Hence $\sigma(k)\ge C G(D(k))$ in both cases. Each tent is bounded by twice the indicator of an interval of length $4\delta$. Consequently
+\[
+ \int_m^M G(x)\,dx\ge4-8K\delta=2.
+\]
+On $0\le k\le\pi$, the inequalities $0\le\sin k\le1$ and $\sigma\ge0$ imply $\sigma(k)\ge CG(D(k))\sin k$, even when $G(D(k))<0$. Since $D'(k)=2\sin k$, substitution gives $\int_0^\pi\sigma(k)\,dk\ge (C/2)\int_m^M G(x)\,dx\ge C$. The other half of the circle contributes nonnegative cost, which proves~\eqref{palettelower}. Combining it with the support lower bound gives the left side of~\eqref{jointresourcebounds}, with $A(m)=\min\{1/[(m+2)(m+4)],1/[64\pi(m+4)^2]\}$.
+
+For the upper bound put $n=\min(r,K-1)\ge1$. Apply the physical compression theorem to any degree-$n$ admissible family. The result uses at most $n+1\le K$ channels, hence at most $K$ temperature levels, and has no larger cost. Zero-padding its real coefficients to degree budget $r$ changes neither its amplitude polynomial nor either normalization nor the cost. Taking infima therefore gives $\mathcal E_{r,K}(m)\le\mathcal E_n(m)$. The established fixed-$m$ upper order for large $n$, together with the finite nearest-neighbor bound for smaller $n$, provides $B(m)$. Finally $\min(r,K-1)\ge\tfrac12\min(r,K)$ and $\min(r,K)^{-2}$ is comparable to $r^{-2}+K^{-2}$.
+\end{proof}
+At fixed positive mass, increasing range alone with a bounded palette cannot make the cost vanish. Achieving the order $O(r^{-2})$ as $r\to\infty$ requires $K=\Omega(r)$, and this growth also suffices. These are analytic consequences of~\eqref{jointresourcebounds}. They are not uniform in mass and do not contradict the three-temperature result in the fixed-range critical limit. The palette lower bound uses only the two normalizations and positivity; its matching range-dependent order upper bound uses actual FIR realizability and compression.
+
+\paragraph{Connection to classical quantization.} Conditional-mean-preserving (dual) quantization already gives squared-error decay of order $K^{-2}$ for scalar bounded sources~\cite{dualquant,dualrate}. In fact, for adjacent actual temperatures $a\le d\le h$, the identity $1/t-(a+h-t)/(ah)=(t-a)(t-h)/(aht)$ at every palette temperature $t$ gives $\sigma\ge(d/a-1)(1-d/h)$. With arbitrary frequency-dependent mixtures, the adjacent two-node mixture realizes this secant lower bound. This is not generally a polynomial-rate realization. Clipping the enclosing palette to $[m,M]$ decreases the two nonnegative factors. If the clipped gaps have lengths $\ell_j$ and count $J\le K-1$, integrating the resulting parabolas in the dispersion variable gives at least $\sum_j\ell_j^3/(6M^2)$. The dispersion density is $1/[\pi\sqrt{(d-m)(M-d)}]\ge1/(2\pi)$; by convexity the resulting analytic lower is $16/[3\pi M^2(K-1)^2]$. This independent analytic check is stronger than the coefficient in~\eqref{palettelower}, but is not a separately formalized or sharp coefficient. In fact the entire joint upper order follows from established positive approximation and this interpolation. On $[0,1]$ use the $K$ equally spaced nodes $x_i=i/(K-1)$ and their continuous nonnegative piecewise-linear hat functions $b_i$. They satisfy $\sum_i b_i=1$, $\sum_i x_i b_i=x$ and $0\le\sum_i x_i^2b_i-x^2\le1/[4(K-1)^2]$. The operators $M_r$ of~\cite[Sec.~2.5]{kopotun} are positive, map continuous functions to polynomials of degree at most $r$, preserve $1,x$, and satisfy $M_r(x^2)-x^2=\alpha_r x(1-x)$ with $\alpha_r\le C/r^2$ (enlarging $C$ to cover small degrees). Set $p_i=M_r(b_i)$. Positivity and affine reproduction give exact normalization and mean, and the second-moment defect is bounded by $1/[4(K-1)^2]+C/(4r^2)$. With $w_i(k)=p_i((1-\cos k)/2)$ and $T_i=m+4x_i$, real spectral factorization and the entropy identity give $\mathcal E_{r,K}(m)\le (4/m^2)(C/r^2+1/(K-1)^2)$. Thus the full joint upper order is a direct classical consequence without matrix compression. The range lower order also admits a classical centered Fourier derivative-energy proof (see the accompanying adversarial review). We treat the joint law as a supporting physical application, not an independent major mathematical novelty. In addition, the log-concavity assumption of the uniqueness theorem in~\cite{jourdainpages} fails for the arcsine dispersion density, and its squared-error objective differs from the reciprocal-cost objective. The exact constrained optimum and its sharp positive-mass prefactors remain open here.
+
+\section{Exact convex formulation of the physical infimum}
+The previous scalar relaxation does not retain joint realizability of the two required rate moments and the inverse-temperature moment. We now retain this coupling in a finite-dimensional moment SDP. The Schur complement and matrix-fractional epigraph are classical~\cite{boyd,burke2019}; the formulation also has a direct connection with the matrix Stieltjes moment problem~\cite{adamyan,zalar2026}, discussed below.
+
+Put $n=r+1$, $c=m+2$, $v(z)=(1,z,\ldots,z^r)^\top$, and let $s_\ell(X)=\sum_{i=0}^{r-\ell}X_{i,i+\ell}$ for a real symmetric $n\times n$ matrix $X$. Set $Q=cI-\operatorname{Adj}(P_n)$, where $P_n$ is the path graph. Define the feasible set $\mathcal F_r(m)$ of real symmetric triples $(G,H,J)$ by
+\begin{equation}\label{sdpcone}
+G\succeq0,\qquad \begin{pmatrix}H&G\\G&J\end{pmatrix}\succeq0,
+\end{equation}
+\begin{align}
+ s_0(G)&=1, & s_\ell(G)&=0\quad(1\le\ell\le r),\notag\\
+ s_0(H)&=c, & s_1(H)&=-1, & s_\ell(H)&=0\quad(2\le\ell\le r).\label{sdplags}
+\end{align}
+The objective is $f(G,H,J)=\operatorname{tr}(QJ)-1$.
+
+\begin{theorem}[Exact physical SDP and approximate recovery]\label{exactsdp}
+For every integer $r\ge1$ and every $m>0$,
+\begin{equation}\label{sdpminimum}
+\mathcal E_r(m)=\min_{(G,H,J)\in\mathcal F_r(m)}\{\operatorname{tr}(QJ)-1\}.
+\end{equation}
+For any feasible triple and any $\epsilon>0$, there exists an admissible real FIR bath family of at most $r+1$ strictly positive-temperature channels with cost at most $f(G,H,J)+\epsilon$. If $G,H\succ0$, the same assertion holds with $\epsilon=0$, preserving $G,H$ and replacing $J$ by a matrix no larger in the positive-semidefinite order. Attainment of the matrix SDP does not by itself assert attainment by an actual bath family.
+\end{theorem}
+\begin{proof}
+For a physical family let $A$ contain the real coefficient rows and $T$ be the diagonal matrix of its positive temperatures. Then
+\[
+ G=A^\top A,\qquad H=A^\top TA,\qquad J=A^\top T^{-1}A.
+\]
+The block matrix in~\eqref{sdpcone} is the Gram matrix of the horizontally concatenated matrices $T^{1/2}A$ and $T^{-1/2}A$. Its positive semidefiniteness follows without any restriction on the original finite number of rows. Since $v(e^{ik})^*Xv(e^{ik})=s_0(X)+2\sum_{\ell=1}^rs_\ell(X)\cos(\ell k)$, Fourier uniqueness makes the two physical constraints precisely~\eqref{sdplags}. Fourier orthogonality also gives $\avg{D(k)v^*Jv}=cs_0(J)-2s_1(J)=\operatorname{tr}(QJ)$. Thus the SDP infimum is no larger than the physical one.
+
+Conversely assume $G,H\succ0$. Write $S=H^{1/2}$, $R=S^{-1}$, and diagonalize the positive definite matrix $RGR$ with orthonormal real eigenvectors $e_i$ and eigenvalues $\lambda_i>0$. Use coefficient rows and temperatures
+\begin{equation}\label{sdp-recover}
+ a_i^\top=\sqrt{\lambda_i}\,e_i^\top S,\qquad T_i=\lambda_i^{-1}.
+\end{equation}
+The resulting Gram moments are $G,H$ and $J_{\rm phys}=GH^{-1}G$. Testing the block quadratic form on $(-H^{-1}Gy,y)$ proves $J-J_{\rm phys}\succeq0$. The first two moments preserve both all-frequency normalizations, and the third gives no larger pointwise entropy, since $D>0$. This gives $n$ real FIR rows and strictly positive temperatures.
+
+For arbitrary feasible matrices, there is a physical reference with $G_0,H_0\succ0$: for each $i=0,\ldots,r-1$ take the two rows $z^i(1+z)/(2\sqrt r)$ and $z^i(1-z)/(2\sqrt r)$ at temperatures $m$ and $m+4$, respectively. These are an average of shifted nearest-neighbor pairs and satisfy both normalizations. The sum and difference of each row pair span the corresponding two coordinate directions, so all rows together span $\R^n$; strict positivity of the temperatures gives the asserted positive definiteness. Mix any feasible triple with the reference triple with weights $1-t,t$, $0<t\le1$. This preserves the block cone and lag equalities and makes its first two matrices positive definite. Recover a physical family by~\eqref{sdp-recover}. Its cost is no larger than the affine mixture of the two SDP objectives, which tends to the original objective as $t\downarrow0$. This proves approximate recovery and equality of infima without assuming a minimizing physical family.
+
+Finally $Q\succeq mI$ by the path quadratic form bound $2|x_ix_{i+1}|\le x_i^2+x_{i+1}^2$. The feasible set is closed, $G,H,J\succeq0$, $\operatorname{tr}(G)=1$ and $\operatorname{tr}(H)=c$. A finite objective sublevel bounds $\operatorname{tr}(J)$ by $(f+1)/m$. For positive semidefinite matrices these trace bounds control all entries. The nonempty sublevel containing the reference is therefore compact, so the SDP infimum is attained.
+\end{proof}
+
+\paragraph{Singular boundary and scope.}
+Equality of optimization values is not equality of feasible triple sets. For example, at $r=m=1$, take $G=\operatorname{diag}(1,0)$, $H=\left(\begin{smallmatrix}3/2&-1\\-1&3/2\end{smallmatrix}\right)$ and $J=GH^{-1}G$. This is feasible for~\eqref{sdpcone}--\eqref{sdplags}; however, the zero second diagonal entry of $G$ would force every second coefficient of a physical family to vanish, contradicting the positive second diagonal entry of $H$. The reference mixture is needed, not an assumption that all closed-cone feasible points are physical. Also, adding any positive multiple of $I$ to the reference $J_0$ makes its block cone strictly positive by the Schur complement. Thus the SDP satisfies Slater's condition~\cite[Sec.~5.2.3]{boyd}, in addition to having a finite attained primal minimum. The reduction does not encode a prescribed smaller temperature palette, nor does it extend the microscopic rate hypothesis beyond the one in Section~1.
+
+\paragraph{Exact finite-range certificates.}
+Let $C$ be real and let $V_+$ be symmetric, with
+\[
+ Z=\begin{pmatrix}V_+&C\\ C^\top&Q\end{pmatrix}\succeq0,
+ \quad U=-(C+C^\top),\quad V=-V_+.
+\]
+If $U,V$ are symmetric Toeplitz, $\operatorname{tr}(UG)+\operatorname{tr}(VH)-1$ has the same value for all primal-feasible $G,H$, by~\eqref{sdplags}. It is a rigorous lower bound because the difference from the primal objective is the trace of the product of $Z$ and the positive semidefinite block in~\eqref{sdpcone}. A feasible positive definite $G,H$ with $J=GH^{-1}G$ gives a physical upper bound. The independent exact verifier constructs rational primal and dual certificates, giving the following outward-rounded intervals:
+\begin{center}
+\begin{tabular}{@{}rlll@{}}
+\toprule
+$r$ & $m$ & Lower bound & Upper bound \\\midrule
+2 & $1/100$ & 19.987678784481 & 19.987679712278\\
+2 & $1$ & 0.174434169426 & 0.174434169639\\
+2 & $10$ & 0.006513425728 & 0.006513428802\\\bottomrule
+\end{tabular}
+\end{center}
+The trial rational parameters were selected using numerical exploration; the bounds themselves use exact rational Schur and trace certificates, not solver tolerances. The exact fractions and reconstruction instructions are in \texttt{range2\_exact\_certificates.json} and \texttt{verify\_exact\_sdp.py}. These earlier intervals illustrate the computational reduction. Section~\ref{sec:range2exact} now resolves the range-two minimum exactly.
+
+\paragraph{Relation to classical matrix moments.}
+For a physical family, define the atomic positive matrix measure $dM=\sum_i a_i a_i^\top\delta_{T_i}$ and $dN=T^{-1}dM$. Then $(J,G,H)$ are precisely the zeroth, first and second moments of $N$. Adamyan--Tkachenko~\cite[Thm.~2.1 and Sec.~2]{adamyan} give the truncated matrix Stieltjes existence criterion, including the additional kernel implications for degenerate moments and the construction of finite canonical solutions. After the reference mixture, $G,H\succ0$ and $J\succeq GH^{-1}G\succ0$. Their degree-two criterion therefore supplies an alternative moment-existence argument (the two kernel implications for constant vector polynomials are vacuous). A real finite atomic representation can be obtained by taking real parts of the positive Hermitian masses. Multiplying by $T$, discarding a possible atom at zero, and factoring the resulting positive masses preserves $G,H$ and does not increase $J$. This also proves the optimal-value equality with the same reference limit; the direct proof above gives the tighter $n$-row recovery explicitly. Theorem 1.1 of the 2026 matricial rational truncated moment preprint~\cite{zalar2026} characterizes a fully specified rational mapping on a bounded-degree numerator space with a fixed denominator, using polynomial moment positivity, column and support conditions, and avoidance of prescribed real poles. Theorem 5.1 concerns simultaneous minimum atom multiplicities for an already representable Stieltjes mapping. For the three thermal moments, the ordinary Stieltjes reweighting is simpler; a denominator $T^2$ would require additional moments to apply the full rational theorem directly. Neither theorem imposes our Fourier lag constraints or trace objective. The indexed theorem text was checked again on 26 November 2026, but direct PDF retrieval and some displayed formulas remained unavailable. The detailed comparison is in the prior-art addendum. Thus neither the general moment problem nor Schur complement theory is claimed new. The value of this result is the physical specialization with both Fourier normalization constraints, constructive positive-temperature recovery and certifiable finite-range costs; independent assessment of priority and scientific significance remains necessary.
+
+\section{An attained algebraic minimum at range two}\label{sec:range2exact}
+The exact SDP can be solved further at the first range where the scalar relaxation is strictly nonphysical. The following result provides an attained physical minimum, rather than just a numerical or asymptotic bound. Its proof supplies a universal dual certificate, so no symmetry constraint on the competing bath family is needed.
+
+\begin{theorem}[Exact range-two minimum]\label{range2exact}
+Let $m>0$, $c=m+2$, and define
+\begin{align*}
+N_c(e)={}&32c^3e^4+(128-64c^4)e^3\\
+&+(16c^5+20c^3-40c)e^2-8c^4e+c^3+2c.
+\end{align*}
+There is a unique root $e_*$ of $N_c$ in $(c/4,(3c-2)/8)$. Then
+\begin{equation}\label{range2value}
+\mathcal E_2(m)=\frac{2e_*(4c^3e_*-8c^2e_*^2-c^2-2)}{(2ce_*-4e_*^2-1)(4c^2e_*-c+8e_*)}-1.
+\end{equation}
+This minimum is attained by a real FIR realization of three channels with three distinct strictly positive temperatures. No optimum has fewer than three distinct temperatures or fewer than three channels.
+\end{theorem}
+\begin{proof}
+Put $q=c-2e$, $\Delta=eq-1/2$, $B=4c^2e-c+8e$, and define
+\[
+a=\frac{2e(2ce+1)}B,\quad b=1-2a,\qquad G=\operatorname{diag}(a,b,a),\quad
+H=\begin{pmatrix}e&-1/2&0\\-1/2&q&-1/2\\0&-1/2&e\end{pmatrix}.
+\]
+Throughout the closed root bracket $[c/4,(3c-2)/8]$ we have $e>1/2$, $q>1$ and $\Delta>0$. The form of $H$ is
+\[
+(e-1/2)(x_0^2+x_2^2)+(q-1)x_1^2+\tfrac12[(x_0-x_1)^2+(x_1-x_2)^2],
+\]
+so $H\succ0$. Also $B\ge c^3+c>0$ and $Bb=B-4e(2ce+1)=4c\Delta+c+4e>0$, proving $G\succ0$. The exact lag constraints hold. Define $K=H^{-1}G$ and $J=GK=K^\top HK$, so the primal block is positive semidefinite. In terms of $m=c-2$, direct expansion gives
+\begin{align*}
+N_c(c/4)={}&m^7/8+7m^6/4+39m^5/4+55m^4/2\\
+ &+81m^3/2+27m^2+4m>0,\\
+N_c((3c-2)/8)={}&-\tfrac m{128}(63m^6+618m^5+2380m^4+4552m^3\\
+ &\hspace{24mm}+4368m^2+2144m+768)<0.
+\end{align*}
+The intermediate value theorem gives an interior root. For uniqueness, rescale by $e=c/4+mt/8$ for $0\le t\le1$. Write $P(t)=128N_c(c/4+mt/8)$. Direct expansion gives $P(t)=P(0)-At-B_2t^2-C_3t^3+D_4t^4$, where
+\begin{align*}
+A&=32m(m+2)^2(m^2+4m+2)(m^2+4m+5),\\
+B_2&=8m^2(m+2)(5m^4+40m^3+115m^2+140m+46),\\
+C_3&=8m^3(m^2+4m+2)(m^2+4m+6),\qquad D_4=m^4(m+2)^3.
+\end{align*}
+All four coefficients are positive and
+\[
+A-4D_4=4m(m+2)^2(7m^4+62m^3+184m^2+224m+80)>0.
+\]
+For $0\le s<t\le1$, $t^4-s^4\le4(t-s)$, by factoring the difference of fourth powers. The quadratic and cubic differences are nonnegative, so $P(t)-P(s)\le-(A-4D_4)(t-s)<0$. Thus the root is unique, strictly interior, independently of any optimization argument. The denominator $2\Delta B$ is strictly positive on the entire bracket.
+To verify global optimality, put $L=2\Delta B$, $w=2ce+1$, $u=w(4\Delta+1)$, $v=B-4ew$, $x=2ew$, $y=2ev$. Then
+\[
+K=L^{-1}\begin{pmatrix}u&v&w\\x&y&x\\w&v&u\end{pmatrix},\quad U=KQ+QK^\top,\quad V=KQK^\top.
+\]
+The identity $HK=G$ follows by multiplication. $U$ is symmetric Toeplitz; $V$ is symmetric and reflection-invariant, and its diagonal difference is $V_{00}-V_{11}=N_c(e)/L^2$. Thus at the root $V$ is also Toeplitz.
+
+For every feasible triple $(G',H',J')$, including singular or nonsymmetric-under-reflection competitors, the block form tested on $(-Kz,z)$ gives
+\[
+W=J'-K^\top G'-G'K+K^\top H'K\succeq0.
+\]
+Since $Q\succ0$, trace cyclicity yields
+\[
+0\le\operatorname{tr}(QW)=\operatorname{tr}(QJ')-\operatorname{tr}(UG')+\operatorname{tr}(VH').
+\]
+For a symmetric Toeplitz $X$ with first row $(x_0,x_1,x_2)$, the lag constraints fix $\operatorname{tr}(XG')=x_0$ and $\operatorname{tr}(XH')=cx_0-2x_1$. Therefore the last two terms are independent of the competitor. At our candidate $W=0$, proving equality with the global lower bound. Evaluation of $\operatorname{tr}(QJ)-1$ gives~\eqref{range2value}. Independently, the reflected diagonal ansatz has objective plus one
+\[
+F(a,e)=ca^2/e+[cqa^2+ce(1-2a)^2-2a(1-2a)]/\Delta.
+\]
+Its second derivative in $a$ is $B/(e\Delta)>0$. Eliminating $a$ by stationarity yields the rational expression in~\eqref{range2value}, whose derivative is $-2N_c(e)/[(2ce-4e^2-1)^2B^2]$. This scalar calculation is a check, not a replacement for the universal certificate.
+
+Every root in the specified bracket therefore certifies the same physical minimum; uniqueness concerns the bracket root, not every optimal bath decomposition. No extraneous solution of an elimination equation is used.
+
+Positive-definite recovery in~\eqref{sdp-recover} realizes the candidate with exactly three rows and strictly positive temperatures. Every bath family with at most two distinct temperatures has cost at least $2/[m(m+4)]$, whereas the degree-two three-temperature construction in Section~\ref{temperaturelevels} gives $\mathcal E_2(m)\le1/[m(m+4)]$. Hence the three recovered temperatures are distinct and every physical optimum requires at least three distinct temperatures.
+\end{proof}
+
+This all-mass exact result concerns the present degree-bounded physical class, not arbitrary matrix moment problems; its priority and significance remain subject to independent review. The independent rational verifier uses symbolic inversion of $H$, exact Sturm root counts and bisection, and rational interval evaluation of the unreduced $F$ at twelve positive masses. It reproduces the earlier three primal--dual intervals with a separate all-principal-minors test. For example, outward-rounded exact interval calculations give
+\begin{center}
+\begin{tabular}{@{}rll@{}}
+\toprule
+$m$ & Lower bound for $\mathcal E_2(m)$ & Upper bound \\\midrule
+$1/100$ & 19.987679712277324780 & 19.987679712277324781\\
+$1$ & 0.174434169638911279 & 0.174434169638911280\\
+$10$ & 0.006513428801557112 & 0.006513428801557113\\\bottomrule
+\end{tabular}
+\end{center}
+The exact fractions and finite checks are in \nolinkurl{range2_algebraic_intervals.json} and \nolinkurl{verify_range2_algebraic.py}. An independent symbolic checker, \nolinkurl{verify_range2_closure.py}, uses the nonnegative Bernstein basis to certify ten groups of all-parameter sign and denominator identities; its derivative certificate differs from the direct finite-difference proof above. The uniqueness and minimum temperature count statements do not imply a physical minimizer for every higher range or any extra microscopic density-of-states equivalence.
+
+\section{Verification, limitations and reproducibility}
+The Lean model uses every complex $z$ with $\|z\|=1$, real coefficient functions truncated at degree $r$, strictly positive temperatures, arbitrary finite index types, and the normalized circle average. The integrated source verifies the lower and upper bounds, Corollary~\ref{theta}, and scalar entropy identities. Boundary verifies feasibility exactly for positive ranges at positive mass. CompressionExistence, PhysicalCompression and PhysicalInfimum verify the actual finite-family compression and unconditional infimum equality; the path modules verify the temperature spectrum, admissibility criterion, residual and pointwise cyclic comparison. RealFactorBase, RealFactorization, TrigSymmetry and RateEquivalence verify real factorization including zeros and equality of attainable polynomial-rate costs. RelaxationAlgebra, RelaxationPower, MajorantBridge, MajorantExact and RelaxationGap establish the exact full majorant minimum, inclusion of physical costs in relaxed costs and two-sided exponential-gap estimates in the algebraic parameterization $t+t^{-1}=m+2$, $t>1$.
+
+PointwiseBarrier, PointwiseBound, FiniteGapBound and FiniteGapStrict verify Theorems~\ref{pointwisebarrier} and~\ref{finitegapthm}. CriticalEnergy, CriticalRealization and CriticalScaling verify the endpoint energy inequality, actual three-channel real FIR construction, and the unrestricted quantitative bounds and squeeze in~\eqref{criticalbounds}. TemperatureCount and ThreeTemperature verify the pointwise two-temperature lower bound, attained restricted minimum, all-mass half-cost witness, strict comparison of the infima, and quantitative small-mass advantage of the critical family. The critical limits and minimal-temperature-cardinality corollary follow analytically from the verified inequalities; no separate formal limit or stochastic-calculus theorem is asserted. TemperatureResourceLower and TemperatureResource verify the temperature-only floor, nonempty palette-constrained cost set, infimum comparison by compression and padding, and quantified joint inequalities in~\eqref{jointresourcebounds}. The sharp joint-order consequences follow analytically. SDPSpectral, SDPMoments, SDPReference, SDPRealization and SDPExact verify the positive-definite recovery, physical inclusion, and arbitrary-tolerance recovery from the closed operator cone, including equality of infima. The finite lag/trace representation, compactness, Slater argument, moment-theory comparison and rational certificate interpretation are analytic consequences; the exact finite certificates are checked separately in Python, not Lean. RangeTwoCoordinates verifies the Fourier coordinates and average objective at range two; RangeTwoAlgebra verifies the root existence and polynomial certificate identities; RangeTwoExact verifies positive-definite feasibility, the explicit value, universal comparison and an attaining admissible family with at most three channels that is not a two-temperature family. RangeTwoClosure verifies strict antitonicity on the whole bracket, unique strict root, the exact original physical value for any bracket root, the channel and temperature lower bounds for every optimum, and their combination in the theorem \texttt{range2\_complete}. Its palette argument permits repeated or unused palette slots, including nonpositive unused slots; actual channel temperatures are strictly positive. All 87 representative axiom audits in the evidence list only \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}; none lists \texttt{sorryAx}.
+
+The 17 active verifier scripts include 990 previously executed exact structured cases for the joint resource result (165 palettes and 825 feasible polynomial-rate families), with 14,385 internal assertion evaluations reported separately. The retained historical convention totals 43,300 scientific test units (35,100 exact rational/symbolic and 8,200 numerical tolerance); another 436 historical exact units and earlier 15 root-sign software regressions are separately reported. The SDP verifier passed in Linux and has now been replayed in Windows, contributing 144 historical exact cases (32 reference constructions, 96 singular-boundary mixtures, seven range-one dual equalities, three range-two certificate intervals and six generalized-eigenvector reconstructions); repeated executions of the same cases are counted once. The resource-law rational verifier passed in Windows and Linux; cross-platform repeats are not counted again. A proposed critical-verifier counterexample was rejected correctly, and an alternate square-free/Sturm check corroborates its 340 existing cases. Repeats and software checks do not inflate the scientific counter. Finite checks support, but do not prove, universal statements. See \texttt{VERIFIER\_ACCOUNTING.md} for per-program counters and \texttt{ENGINEERING\_ACCEPTANCE.json} for actual process exits, source hashes, platform information, clean-build scope and archived evidence. The 45-module reproducer uses Lean 4.28.0 and Mathlib commit \nolinkurl{8f9d9cff6bd728b17a24e163c9402775d9e6a365}; Python 3.11.9/SymPy 1.13.1 on Windows and Python 3.13.5/SymPy 1.14.0 on Linux were used for the newer verifier evidence. The archive distinguishes clean project reconstruction from a complete dependency rebuild, and staged verification from a one-command replay. It includes no precompiled project objects.
+
+Open problems include a sharp fixed-positive-m large-range prefactor, physical attainment at every range $r\ge3$, exact optimal costs and sharp constants for a prescribed number of distinct temperature levels, joint mass--range--palette limits and extensions beyond the normalized dispersion and individual-rate degree constraint. The literature audit is not a proof of priority or an independent assessment of scientific significance. The alternate classical derivation and the scope illustration are analytic review comparisons, not new machine-certified results. The accepted SDP extension added five verified modules and 144 exact scientific cases. The range-two extension adds three verified modules and twelve independent rational cases; three earlier SDP certificates were rechecked and are not counted again. The final closure adds one verified module and ten universal symbolic certificate groups, not additional finite scientific cases. Windows replays of the earlier SDP and range-two verifiers match their original input hashes and output JSON values; the new Bernstein certificate was reproduced in Windows and Linux. The project build evidence distinguishes the clean stages 32+2+2+5+3+1 from a single full 45-module invocation. AI materially contributed to mathematical derivation, coding, verification and writing. Human authorship, contribution accountability, disclosure, licensing, distribution and venue decisions remain pending. This is an internal working manuscript; no peer review or public release has occurred.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{gopal} S. Gopalakrishnan, \emph{Thermodynamic cost of locally maintaining a steady state}, arXiv:2610.38925v1 (2026), \url{https://arxiv.org/abs/2610.38925}. Accessible mirror: \url{https://borowiecki.dev/pdf/2610.38925}.
+\bibitem{okayasu} T. Okayasu and Y. Ueta, Estimates for moduli of coefficients of positive trigonometric polynomials, \emph{Scientiae Mathematicae Japonicae Online} 6, 115--122 (2002).
+\bibitem{hansen} F. Hansen and G. K. Pedersen, Jensen's operator inequality, \emph{Bull. London Math. Soc.} 35, 553--564 (2003), \href{https://doi.org/10.1112/S0024609303002200}{doi:10.1112/S0024609303002200}.
+\bibitem{dimitrov} D. K. Dimitrov, Extremal positive trigonometric polynomials, in \emph{Approximation Theory: A Volume Dedicated to Blagovest Sendov}, 1--24 (2002), Theorem 4.
+\bibitem{brouwer} A. E. Brouwer and W. H. Haemers, \emph{Spectra of Graphs}, Springer (2012), Sec.~1.4.4.
+\bibitem{murashita} Y. Murashita and M. Esposito, Overdamped stochastic thermodynamics with multiple reservoirs, \emph{Phys. Rev. E} 94, 062148 (2016), \href{https://doi.org/10.1103/PhysRevE.94.062148}{doi:10.1103/PhysRevE.94.062148}.
+\bibitem{dritschel} M. A. Dritschel and J. Rovnyak, \emph{The operator Fej\'er--Riesz theorem}, arXiv:0903.3639 (2009), \url{https://arxiv.org/abs/0903.3639}.
+\bibitem{faria} A. M. Faria, M. V. S. Bonan\c{c}a and E. Lutz, \emph{Nonequilibrium fluctuation relations for non-Gaussian processes}, arXiv:2502.20179 (2025), \url{https://arxiv.org/abs/2502.20179}.
+\bibitem{godreche} C. Godr\`eche and J.-M. Luck, Characterising the nonequilibrium stationary states of Ornstein--Uhlenbeck processes, \emph{J. Phys. A} 52, 035002 (2019), \url{https://doi.org/10.1088/1751-8121/aaf190}.
+\bibitem{licates} Y. I. Li and M. E. Cates, Steady state entropy production rate for scalar Langevin field theories, \emph{J. Stat. Mech.} (2021), \url{https://doi.org/10.1088/1742-5468/abd311}.
+\bibitem{horowitz} J. M. Horowitz and J. L. England, Information-theoretic bound on the entropy production to maintain a classical nonequilibrium distribution using ancillary control, \emph{Entropy} 19, 333 (2017), \url{https://doi.org/10.3390/e19070333}.
+\bibitem{esposito} M. Esposito, Stochastic thermodynamics under coarse graining, \emph{Phys. Rev. E} 85, 041125 (2012), \url{https://doi.org/10.1103/PhysRevE.85.041125}.
+\bibitem{nardini} C. Nardini, E. Fodor, E. Tjhung, F. van Wijland, J. Tailleur and M. E. Cates, Entropy production in field theories without time-reversal symmetry: Quantifying the non-equilibrium character of active matter, \emph{Phys. Rev. X} 7, 021007 (2017), \url{https://doi.org/10.1103/PhysRevX.7.021007}.
+\bibitem{chen} Y.-H. Chen and T. Grover, \emph{Markov length can diverge in systems whose universal physics is spatially Markovian}, arXiv:2610.11235 (2026), \url{https://arxiv.org/abs/2610.11235}.
+\bibitem{pinkus} A. Pinkus, Negative theorems in approximation theory, \emph{Amer. Math. Monthly} 110, 900--911 (2003), \url{https://doi.org/10.1080/00029890.2003.11920030}.
+\bibitem{kopotun} K. A. Kopotun, D. Leviatan, A. Prymak and I. A. Shevchuk, Yet another look at positive linear operators, $q$-monotonicity and applications, \emph{J. Approx. Theory} 210, 1--22 (2016), \url{https://doi.org/10.1016/j.jat.2016.06.001}.
+\bibitem{bernsteinmonotone} L.-T. Su, G. Mutlu and B. \c{C}ekim, On the shape-preserving properties of $\lambda$-Bernstein operators, \emph{J. Inequal. Appl.} 2022, article 151 (2022), \url{https://doi.org/10.1186/s13660-022-02890-1}.
+\bibitem{dualquant} G. Pag\`es and B. Wilbertz, Intrinsic stationarity for vector quantization: Foundation of dual quantization, \emph{SIAM J. Numer. Anal.} 50, 747--780 (2012), \url{https://doi.org/10.1137/110827041}.
+\bibitem{dualrate} G. Pag\`es and B. Wilbertz, Sharp rate for the dual quantization problem, in \emph{S\'eminaire de Probabilit\'es XLIX}, Lecture Notes in Mathematics 2215, 405--454 (2018), \url{https://doi.org/10.1007/978-3-319-92420-5_11}. Preprint: \url{https://arxiv.org/abs/1012.3441}.
+\bibitem{jourdainpages} B. Jourdain and G. Pag\`es, Optimal dual quantizers of 1D log-concave distributions: Uniqueness and Lloyd like algorithm, \emph{J. Approx. Theory} 267, 105581 (2021), \url{https://doi.org/10.1016/j.jat.2021.105581}.
+\bibitem{horowitzzhou} J. M. Horowitz, K. Zhou and J. L. England, Minimum energetic cost to maintain a target nonequilibrium state, \emph{Phys. Rev. E} 95, 042102 (2017), \url{https://doi.org/10.1103/PhysRevE.95.042102}.
+\bibitem{boyd} S. Boyd and L. Vandenberghe, \emph{Convex Optimization}, Cambridge University Press (2004), Example 3.4 and Sec.~5.2.3, \url{https://web.stanford.edu/~boyd/cvxbook/}.
+\bibitem{burke2019} J. V. Burke, Y. Gao and T. Hoheisel, Variational properties of matrix functions via the generalized matrix-fractional function, \emph{SIAM J. Optim.} 29, 1958--1987 (2019), \url{https://doi.org/10.1137/18M1209660}.
+\bibitem{adamyan} V. M. Adamyan and I. M. Tkachenko, Solution of the Stieltjes truncated matrix moment problem, \emph{Opuscula Math.} 25, 5--24 (2005), \url{https://doi.org/10.7494/OpMath.2005.25.1.5}.
+\bibitem{zalar2026} A. Zalar and I. Zobovi\v{c}, \emph{The Matricial Univariate Rational Truncated Moment Problem}, arXiv:2608.28227 (2026), \url{https://arxiv.org/abs/2608.28227} (indexed theorem-text comparison; incomplete PDF access).
+\end{thebibliography}
+\end{document}

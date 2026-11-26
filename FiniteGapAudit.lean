@@ -1,0 +1,31 @@
+import FullAudit
+import FiniteGapStrict
+
+#check GaussianRange.angular_normalizations
+#print axioms GaussianRange.angular_normalizations
+#check GaussianRange.moment_energy_bound
+#print axioms GaussianRange.moment_energy_bound
+#check GaussianRange.bath_moment_energy_bound
+#print axioms GaussianRange.bath_moment_energy_bound
+#check GaussianRange.bath_angular_variational
+#print axioms GaussianRange.bath_angular_variational
+#check GaussianRange.physical_pointwise_barrier
+#print axioms GaussianRange.physical_pointwise_barrier
+#check GaussianRange.physical_constant_barrier
+#print axioms GaussianRange.physical_constant_barrier
+#check GaussianRange.avg_im_square
+#print axioms GaussianRange.avg_im_square
+#check GaussianRange.barrier_majorant_lower
+#print axioms GaussianRange.barrier_majorant_lower
+#check GaussianRange.finite_range_gap_bound
+#print axioms GaussianRange.finite_range_gap_bound
+#check GaussianRange.strict_relaxed_height
+#print axioms GaussianRange.strict_relaxed_height
+#check GaussianRange.strict_finite_range_gap
+#print axioms GaussianRange.strict_finite_range_gap
+#check GaussianRange.nearest_sigma_exact
+#print axioms GaussianRange.nearest_sigma_exact
+#check GaussianRange.nearest_cost_exact
+#print axioms GaussianRange.nearest_cost_exact
+#check GaussianRange.nearest_gap_zero
+#print axioms GaussianRange.nearest_gap_zero

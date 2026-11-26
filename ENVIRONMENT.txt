@@ -1,0 +1,24 @@
+Windows full fresh replay (recorded in evidence/windows_fresh_replay/reproduction_logs):
+Lean 4.28.0, x86_64-w64-windows-gnu, commit 7e01a1bf5c70fc6167d49c345d3bf80596e9a79b, Release
+Mathlib 8f9d9cff6bd728b17a24e163c9402775d9e6a365 (existing dependency cache reused)
+Python 3.11.9, MSC v.1938 64 bit AMD64
+SymPy 1.13.1
+NumPy 2.4.6 (checked immediately after the completed replay; not recorded by the original replay script)
+Post-replay environment check: CoS completed session 98459 exit 0. Mathlib tracked working tree status was empty at that check. This does not certify every byte of the dependency cache or a fresh Mathlib rebuild.
+
+Linux scientific verifier replay (recorded in evidence/linux_verifier_replay/REPLAY_RESULT.json):
+Python 3.13.5 (GCC 14.2.0)
+SymPy 1.14.0
+NumPy 2.3.5
+Linux-6.18.57-x86_64-with-glibc2.41
+All 11 active scripts returned exit 0.
+
+Current PDF build: pdfTeX 3.141592653-2.6-1.40.26 (TeX Live 2025/dev/Debian), two passes; rendering with pdftoppm.
+Historic Windows PDF build: Tectonic 0.17.0; PyMuPDF 1.26.5. Earlier build logs and original PDF bytes are preserved in history.
+
+No Lean or Mathlib reinstallation or upgrade was performed. The archive contains no project .olean or toolchain binaries.
+
+
+Current extension: Windows Lean 4.28.0 and same pinned Mathlib commit, clean three-module extension replay exit 0; new exact verifier Linux Python 3.13.5/SymPy 1.14.0 exit 0. Original 29-module full rebuild evidence and 11-verifier Windows/Linux evidence unchanged. Current 12-page PDF: pdfLaTeX twice, rendered 12 pages using the PDF rendering skill; no new TeX dependency installation.
+
+Temperature-resource version: Windows Python 3.11.9 / SymPy 1.13.1 and Linux Python 3.13.5 / SymPy 1.14.0 both pass verify_temperature_count.py (identical source SHA256 b218d3b9fb641bf217778b71b73bd07ceb1a5920bbaf02cc2bbdea108092c8ef). Current 13-page PDF: three pdfLaTeX passes with stable references and pdftoppm page review. Actual new Lean and complete predecessor replay versions and process logs are retained in the final evidence. No dependency installation/upgrade or Codex use.

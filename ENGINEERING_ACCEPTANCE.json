@@ -1,0 +1,279 @@
+{
+  "scope": "WORKING / UNPUBLISHED; exact range-two closure; no independent human review",
+  "windows_replay": {
+    "session_id": 71743,
+    "process_exit": 0,
+    "lean_modules": 29,
+    "python_verifiers": 11,
+    "per_program_zero_exits": 40,
+    "representative_axioms": 42,
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "source_matches": 41,
+    "initial_project_olean_count": 0,
+    "dependency_cache_reused": true,
+    "raw_evidence_archive_sha256": "ea9d3f65bbaee5cce1f2e88ab14600437749faf981255104793f6a262d92f266",
+    "raw_evidence_manifest_matches": 87,
+    "drive_file_id": "1xV4df72VrSZPksai7Nn_FRnNbh7SSOzf",
+    "replay_command": "powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File reproduce.ps1 -RunTests",
+    "qualification": "Freshly extracted original 320-file archive; remote original archive later verified byte-identical. Final code/script identical to replay inputs; current manuscript changed editorially only. The later extension changes the reproducer; the prior script is preserved byte-exact under history/precritical_snapshot/."
+  },
+  "linux_replay": {
+    "python_verifiers": 11,
+    "all_exit_zero": true,
+    "source_sha256_matches": 11,
+    "raw_evidence_archive_sha256": "23d173a9f01c2719339faeb231ba27e1e970a07ac6ff03bc416bad5ea4e506b2",
+    "drive_file_id": "1s0kK2W_NZog_OVWMMvkfCIwZoAVOIZtZ"
+  },
+  "verification_accounting": {
+    "historic": 43300,
+    "historic_exact": 35100,
+    "historic_numerical_tolerance": 8200,
+    "extra_exact_relaxation": 436,
+    "full_active_script_total": 43736,
+    "new_scientific_checks_this_turn": 0,
+    "updated_convention_total": 43300,
+    "updated_exact": 35100,
+    "updated_with_separate_historical": 43736,
+    "new_symbolic_identity_groups_separate": 10,
+    "historical_certificate_replays_not_counted": 3,
+    "prior_range2_symbolic_groups_separate": 12
+  },
+  "manuscript": {
+    "pages": 21,
+    "references": 25,
+    "tex_sha256": "f903fa200247b887f1cf71ce4eabc416de7c47319decf486a97ded2f56c9ba36",
+    "pdf_sha256": "894b35458d0b320b1fadbce7aee9545f8463a2e49f2052f101b9e3b426c409a5",
+    "pdflatex_exits": [
+      0,
+      0,
+      0
+    ],
+    "render_review_all_pages": true,
+    "transport": "Compiler original in package; standalone Drive readback recorded separately.",
+    "final_overfull_box_warnings": 0
+  },
+  "preserved_archives": {
+    "history/GaussianBathRange_WORKING_UNPUBLISHED_portable_2026-11-26.zip": "191cbd1e54418675df626e86072958bcb4bdafd83a94672ce14860f80cf3085d",
+    "history/GaussianBathRange_WORKING_UNPUBLISHED_2026-11-26.zip": "65a50ab31b4b06a3994be2d9044beb092c8fe62fa138f08272d985f7a90cec41",
+    "history/GaussianBathRange_WORKING_UNPUBLISHED_revision2_2026-11-26.zip": "c3e42269aa4ff0df4d36c3e2e0be49af33de73c1f2277fbfc34b86003f9eddfb",
+    "history/GaussianBathRange_FRESH_REPLAY_EVIDENCE_2026-11-26.zip": "ea9d3f65bbaee5cce1f2e88ab14600437749faf981255104793f6a262d92f266",
+    "history/LinuxVerifierReplay_2026-11-26.zip": "23d173a9f01c2719339faeb231ba27e1e970a07ac6ff03bc416bad5ea4e506b2",
+    "history/CriticalExtensionLeanEvidence_2026-11-26.zip": "45031e23024ea932b7942e70d1dbae3d3b026eff6fc71293f510bbaa58a4479e",
+    "history/TemperatureWindowsReplayEvidence_2026-11-26.zip": "1cde575e8e861c46999cbbedd0d58e030dd4d291d6d187fd2d791976dc38cb03"
+  },
+  "formal_completion_count": 1,
+  "release_authorized": false,
+  "open_gates": [
+    "independent human originality and scientific-significance assessment",
+    "human authorship/contribution and disclosure review",
+    "licence and public distribution decision",
+    "formal public release and remote Git verification"
+  ],
+  "critical_extension": {
+    "development_sessions": [
+      4037,
+      66876,
+      59390
+    ],
+    "clean_staged_session": 86953,
+    "clean_staged_exit": 0,
+    "new_lean_modules": 3,
+    "new_axiom_audits": 10,
+    "source_hash_matches": 32,
+    "raw_archive_sha256": "45031e23024ea932b7942e70d1dbae3d3b026eff6fc71293f510bbaa58a4479e",
+    "raw_archive_payload_matches": 31,
+    "drive_file_id": "1EoBrxDmdZLD12fC-jMqXxzFPWSpjJM8U",
+    "new_linux_exact_verifier_exit": 0,
+    "new_exact_checks": 340,
+    "scope": "Historical 29-module full build + 3-module staged extension; now superseded for execution coverage by the new single-command full 32/12 replay below."
+  },
+  "critical_full_replay": {
+    "session_id": 17603,
+    "process_exit": 0,
+    "lean_modules": 32,
+    "python_verifiers": 12,
+    "per_program_zero_exits": 44,
+    "representative_axioms": 52,
+    "source_hash_matches": 45,
+    "initial_project_olean_count": 0,
+    "dependency_cache_reused": true,
+    "replay_command": "powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File reproduce.ps1 -RunTests",
+    "qualification": "New empty Windows project directory populated with all 45 active source/reproducer bytes matching cloud critical-v1 archive. Not a complete Mathlib dependency rebuild. The byte-exact predecessor script is in history/pretemperature_snapshot and raw replay evidence."
+  },
+  "temperature_extension": {
+    "development_sessions": [
+      61335,
+      78589
+    ],
+    "development_v2_exit_zero": 2,
+    "clean_staged_session": 73819,
+    "clean_staged_exit": 0,
+    "new_lean_modules": 2,
+    "new_representative_axioms": 6,
+    "base_and_extension_input_hash_matches": 48,
+    "initial_extension_olean_count": 0,
+    "base_dependency_scope": "32 freshly rebuilt predecessor project modules",
+    "new_windows_verifier_session": 43768,
+    "new_windows_verifier_exit": 0,
+    "new_linux_verifier_exit": 0,
+    "new_scientific_exact_units": 571,
+    "separate_software_regression_units": 15,
+    "alternate_critical_340_repeat_counted_as_new": false,
+    "classifier_17_comparisons_counted_as_new": false,
+    "raw_windows_evidence_session": 11320,
+    "raw_windows_evidence_sha256": "1cde575e8e861c46999cbbedd0d58e030dd4d291d6d187fd2d791976dc38cb03",
+    "raw_windows_evidence_payload_matches": 167,
+    "raw_windows_evidence_drive_id": "1JzZM6iSSnCWlt0pr9WxckiqUt5X_fuuv",
+    "source_sha256": {
+      "TemperatureCount.lean": "c6941cb5fb965be9288fd642a36170d54f41c87496089ecce2cc78036ac5f1e9",
+      "ThreeTemperature.lean": "1ad0a18da6a33d94d8f91621d8397ce619580aece55253d1f0854cd685ed1f4a",
+      "verify_temperature_count.py": "b218d3b9fb641bf217778b71b73bd07ceb1a5920bbaf02cc2bbdea108092c8ef"
+    },
+    "scope": "Full predecessor 32/12 single run followed by two clean extension modules and separately successful new verifier; no observed single-command all-34/13 run claimed."
+  },
+  "active_modules": 45,
+  "active_verifiers": 17,
+  "representative_axioms": 87,
+  "all_34_13_single_command_observed": false,
+  "resource_extension": {
+    "development_sessions": [
+      44287,
+      30198
+    ],
+    "development_exits": [
+      0,
+      0
+    ],
+    "clean_staged_session": 52498,
+    "clean_staged_exit": 0,
+    "new_lean_modules": 2,
+    "new_axiom_audits": 6,
+    "source_hash_matches": 36,
+    "initial_new_stage_olean_count": 0,
+    "raw_windows_evidence_sha256": "6e6a78c568b49be3f9ed75c145d8beec6099326a219ff6e63177ddda6c41c871",
+    "raw_windows_manifest_matches": 32,
+    "raw_windows_drive_file_id": "1csyvl6i91OC2oxsFjKdR_cuaE2qCZ7hj",
+    "new_verifier_sha256": "b1f42aeb3f2112a1c64be6142fcb17c2cdccdc27a9cd6ffd3ae18aa1c3c32e5f",
+    "windows_verifier_session": 46884,
+    "windows_verifier_exit": 0,
+    "linux_verifier_exit": 0,
+    "new_exact_structured_units": 990,
+    "internal_assertions_not_counted": 14385,
+    "scope": "32 predecessor modules in one clean build; two clean temperature and two clean resource stages on verified source-matched dependencies. No single all36 run. No shared dependency reinstall."
+  },
+  "active_counts": {
+    "lean_modules": 45,
+    "verifiers": 17,
+    "representative_axioms": 87
+  },
+  "external_review_revision": {
+    "predecessor_zip_sha256": "180241f546f3369126eefd4e00a6120549c2bcf7ddc1c9efe021cac81551e33c",
+    "predecessor_entries": 880,
+    "new_scientific_units": 0,
+    "new_lean_builds": 0,
+    "unchanged_active_lean": 36,
+    "unchanged_active_verifiers": 14,
+    "unchanged_reproducer": true,
+    "new_review_documents": 4,
+    "standalone_readback_matches": 13,
+    "all_36_single_invocation_observed": false,
+    "package_checker": "Corrected stale 34/13 assumptions; read-only evidence integrity, not scientific replay.",
+    "external_human_review": false,
+    "review_contacted": false,
+    "A_level_certified": false
+  },
+  "sdp_extension": {
+    "development_success_sessions": [
+      63666,
+      10100,
+      11718,
+      26110,
+      83674
+    ],
+    "development_failed_sessions": [
+      94747,
+      6373,
+      4453,
+      56285
+    ],
+    "clean_staged_session": 49326,
+    "clean_staged_exit": 0,
+    "new_lean_modules": 5,
+    "new_axiom_audits": 9,
+    "source_hash_matches": 41,
+    "raw_windows_evidence_sha256": "22003bc5c1c89c0a4a541f544bc91b6e02928e884c9ef4ec9909690e52b12d88",
+    "raw_windows_payload_matches": 49,
+    "raw_windows_drive_file_id": "10v-ZTxd39aSSTtPf4YTcrK5Wf1w3jqYU",
+    "new_linux_verifier_exit": 0,
+    "new_windows_verifier_run": false,
+    "new_exact_structured_units": 144,
+    "all41_single_invocation_observed": false,
+    "new_formal_scope": "operator cone equality of infima and arbitrary-tolerance physical recovery, not separately formalized finite-lag/trace representation, matrix-minimum attainment, strong duality or exact certificate arithmetic",
+    "predecessor_archive_sha256": "e7801f619a98b83ca9e46819c3766953d9440c936be4b57c3a78d82c59a6d866"
+  },
+  "range2_extension": {
+    "development_success_sessions": [
+      8989,
+      41056,
+      26798
+    ],
+    "clean_staged_session": 76518,
+    "clean_staged_exit": 0,
+    "new_lean_modules": 3,
+    "new_axiom_audits": 8,
+    "source_hash_matches": 44,
+    "raw_windows_evidence_sha256": "a79aa1eb65c394b7be6a285aa383bebfcd9c879a612d6a1cedb566ca64cf7452",
+    "raw_windows_payload_matches": 49,
+    "raw_windows_drive_file_id": "1wnGgWHVEiNpCr2yoeTjzA50VivP35MHK",
+    "new_linux_verifier_exit": 0,
+    "new_linux_python": "3.13.5",
+    "new_linux_sympy": "1.14.0",
+    "new_exact_checks": 12,
+    "symbolic_groups_separate": 12,
+    "historical_replays_separate": 3,
+    "new_windows_python_replayed": false,
+    "scope": "32+2+2+5+3 staged; no full44 invocation; cached dependencies; root uniqueness and exact minimum cardinality analytic."
+  },
+  "github_staging_instruction_received": true,
+  "range2_closure": {
+    "development_session": 59789,
+    "development_exit": 0,
+    "clean_staged_session": 92909,
+    "clean_staged_exit": 0,
+    "new_lean_modules": 1,
+    "new_axiom_audits": 6,
+    "source_hash_matches": 45,
+    "raw_windows_evidence_sha256": "1f473a10a4aa73d6305184e91208bf8ba9683f7341ceada6525a45fe3d0a66b7",
+    "raw_windows_payload_matches": 30,
+    "raw_windows_drive_file_id": "1gHVGn_2mFvh9LyLs-_pf0nJqnpNVuTV1",
+    "windows_prior_verifiers_session": 56872,
+    "windows_prior_verifiers_exit": 0,
+    "windows_prior_three_input_hash_matches": 3,
+    "windows_prior_two_json_semantic_matches": 2,
+    "windows_new_verifier_session": 38280,
+    "windows_new_verifier_exit": 0,
+    "linux_new_verifier_exit": 0,
+    "linux_python": "3.13.5",
+    "linux_sympy": "1.14.0",
+    "new_certificate_json_semantic_match": true,
+    "new_finite_scientific_units": 0,
+    "new_universal_symbolic_groups_separate": 10,
+    "staged_module_counts": [
+      32,
+      2,
+      2,
+      5,
+      3,
+      1
+    ],
+    "all45_single_invocation": false,
+    "dependency_cache_reused": true,
+    "failed_transfer": "three one-byte development drafts retained as historical evidence; never executed",
+    "predecessor_archive_sha256": "e1d9f429626b288dd59b87fece1c28b2923063f6e5eeaa6a3d451472399c68b2",
+    "predecessor_payload_count": 1108
+  }
+}
